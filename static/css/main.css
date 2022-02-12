@@ -1,0 +1,145 @@
+
+h1, h3 {
+font-family: 'Merriweather', serif;
+
+}
+
+.mont  {
+font-family: 'Montserrat', sans-serif;
+font-weight: bold;
+}
+
+td, tr {
+font-family: 'Montserrat', sans-serif;
+
+}
+
+
+th {
+
+font-family: 'Montserrat', sans-serif;
+font-weight: bold
+}
+
+
+.store {
+margin-top: 60px
+}
+
+
+
+.x1 {
+
+height: 110px;
+
+}
+
+.cont1 {
+
+  padding: 0
+}
+
+.items {
+  padding-bottom: 15px
+
+}
+
+.itmbtns {
+margin-top: 20px;
+margin-left: 30px;
+width: 110px
+}
+
+.addbtns {
+margin-top: 20px;
+margin-left: 10px;
+
+}
+
+.ynbtns {
+
+width: 100px;
+margin: 20px
+
+}
+
+
+.rghtalgn {
+    text-align: right;
+}
+
+/* Вот отсюда и до следующего длинного комментария это нумератор строк в динамической таблице, жесть!!! */
+
+
+.counter {
+counter-reset: schet;
+}
+
+.counter tbody tr {
+counter-increment: schet;
+
+}
+
+.counter td,
+.counter tr:before {
+  padding: .1em .5em;
+  border-bottom: 1px solid #E7D5C0;
+}
+.counter tbody tr:before {
+  content: counter(schet);
+  display: table-cell;
+  vertical-align: middle;
+
+}
+
+/* следующий длинный комментарий, получился недостаточно длинным, а вот теперь - другое дело =) */
+
+@media screen and (max-width: 1000px) {
+
+
+.btn-container, h1 {
+text-align: center;
+
+}
+
+.plus {
+
+margin-right: 20px
+
+}
+
+.logo {
+margin-top: 7px
+
+}
+
+
+
+}
+
+@media screen and (max-width: 800px) {
+
+.logo {
+
+display: none
+
+}
+
+
+.store {
+
+margin-top: 30px;
+padding-left: 20px;
+
+
+}
+
+.plus {
+
+margin-right: 5px
+
+}
+
+
+
+}

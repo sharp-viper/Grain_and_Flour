@@ -1,0 +1,92 @@
+<table class="table table-hover counter">
+        <thead>
+          <tr>
+            <th scope="col">№</th>
+            <th scope="col">Дата</th>
+            <th scope="col" class="rghtalgn">Высший</th>
+            <th scope="col" class="rghtalgn">Первый</th>
+            <th scope="col" class="rghtalgn">Отруби</th>
+            <th scope="col" class="rghtalgn">З. отходы</th>
+            <th scope="col" class="rghtalgn"">Второй</th>
+            <th scope="col" class="rghtalgn""></th>
+            <th scope="col" class="rghtalgn""></th>
+
+          </tr>
+        </thead>
+        <tbody>
+        {% for line in table %}
+
+          <tr>
+
+            <td>{{line.date.strftime('%d.%m.%Y')}}</td>
+            <td class="rghtalgn">{{line.highest}}</td>
+            <td class="rghtalgn">{{line.first}}</td>
+            <td class="rghtalgn">{{line.bran}}</td>
+            <td class="rghtalgn">{{line.waste}}</td>
+            <td class="rghtalgn">{{line.second}}</td>
+            <td><a href="#" data-toggle="modal" title="Удалить" data-target="#test"
+                   onclick="aTestFunction({{line.id}}, {{line.highest}}, {{line.first}}, {{line.bran}}, {{line.waste}},
+                   {{line.second}})">✘</a></td>
+            <td><a href="{{url_for('prod_edit', item_id=line.id)}}" type="button" title="Редактировать">📝</a></td>
+          </tr>
+
+        {% endfor %}
+        </tbody>
+      </table>
+
+
+
+<script>
+    function aTestFunction(id, highest, first, bran, waste, second){
+        let agnt = id;
+        let high = highest;
+        let frst = first;
+        let brn = bran;
+        let wst = waste;
+        let scnd = second;
+
+        $('#agent').val(agnt)
+        $('#highest').val(high);
+        $('#first').val(frst);
+        $('#bran').val(brn);
+        $('#waste').val(wst);
+        $('#second').val(scnd);
+
+    }
+</script>
+
+
+
+
+<div class="modal fade" id="test" tabindex="-1" aria-labelledby="{{ target }}Label" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3 class="modal-title" id="grainLabel">Вы уверены что нужно удалить позицию?</h3>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+
+
+                <form method="POST" action="/prod/del">
+                    <input id="agent" name="agnt" type="hidden">
+                    <input id="highest" name="high" type="hidden">
+                    <input id="first" name="frst" type="hidden">
+                    <input id="bran" name="brn" type="hidden">
+                    <input id="waste" name="wst" type="hidden">
+                    <input id="second" name="scnd" type="hidden">
+
+                    <div style="text-align: center">
+
+                    <button type="submit" class="btn btn-primary ynbtns">Да</button>
+                    <button class="btn btn-primary ynbtns" data-dismiss="modal">Нет</button>
+</div>
+                </form>
+
+            </div>
+
+          </div>
+        </div>
+      </div>

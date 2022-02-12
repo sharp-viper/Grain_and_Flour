@@ -1,0 +1,82 @@
+
+
+
+<table class="table table-hover counter">
+        <thead>
+          <tr>
+            <th scope="col">№</th>
+            <th scope="col">Дата</th>
+            <th scope="col">Контрагент</th>
+            <th scope="col">Продукция</th>
+            <th scope="col" class="rghtalgn">Объём</th>
+            <th scope="col" class="rghtalgn">Цена</th>
+            <th scope="col" class="rghtalgn">Стоимость</th>
+            <th scope="col" class="rghtalgn"></th>
+            <th scope="col" class="rghtalgn"></th>
+
+          </tr>
+        </thead>
+        <tbody>
+        {% for line in table %}
+
+
+          <tr>
+
+            <td>{{line.date.strftime('%d.%m.%Y')}}</td>
+            <td>{{line.agent}}</td>
+            <td>{{line.production}}</td>
+            <td class="rghtalgn" >{{line.value}}</td>
+            <td class="rghtalgn">{{line.price}}</td>
+            <td class="rghtalgn">{{line.cost}}</td>
+            <td><a href="#" data-toggle="modal" title="Удалить" data-target="#test" onclick="aTestFunction({{line.id}}, {{line.value}}, '{{line.production}}')">✘</a></td>
+            <td><a class="editreal" href="{{url_for('real_edit', item_id=line.id)}}" type="button" title="Редактировать">📝</a></td>
+          </tr>
+
+
+        {% endfor %}
+        </tbody>
+      </table>
+
+<script>
+    function aTestFunction(agent, value, product){
+        let agnt = agent;
+        let vlue = value;
+        let prduct = product;
+
+        $('#id').val(agnt);
+        $('#value').val(vlue);
+        $('#product').val(prduct);
+
+    }
+</script>
+
+
+
+
+<div class="modal fade" id="test" tabindex="-1" aria-labelledby="{{ target }}Label" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3 class="modal-title" id="grainLabel">Вы уверены что нужно удалить позицию?</h3>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+
+
+                <form method="POST" action="/real/del">
+                    <input id="id" name="agnt" type="hidden">
+                    <input id="value" name="vlue" type="hidden">
+                    <input id="product" name="prdct" type="hidden">
+                        <div style="text-align: center">
+                    <button type="submit" class="btn btn-primary ynbtns">Да</button>
+                    <button class="btn btn-primary ynbtns" data-dismiss="modal">Нет</button>
+                        </div>
+                </form>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
