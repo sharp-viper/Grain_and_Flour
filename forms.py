@@ -16,8 +16,8 @@ class AddGrain(FlaskForm):
     agent = StringField("Контрагент", validators=[DataRequired()])
     date = DateField("Дата", validators=[DataRequired()])
     value = FloatField("Количество (кг)", validators=[DataRequired()])
-    discount = FloatField("Скидка", validators=[DataRequired()])
-    price = FloatField("Цена (руб/кг)", validators=[DataRequired()])
+    discount = StringField("Скидка", validators=[DataRequired()])
+    price = StringField("Цена (руб/кг)", validators=[DataRequired()])
     submit = SubmitField("Добавить")
 
 
