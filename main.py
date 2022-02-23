@@ -166,7 +166,7 @@ def real():
                            grain='{:,}'.format(stock.grain).replace(',', ' '),
                            button='real', target='real', onclick11='onclick=', onclick2='onclick=', onclick3='onclick=',
                            table=reversed(table), onclick22='onclick=', onclick33='onclick=', bcolor='#a1ff92',
-                           mright='50px', bimage='/../static/img/A1FF92.png'
+                           mright='50px'
                            )
 
 
@@ -210,7 +210,7 @@ def grain_add():
                            grain='{:,}'.format(stock.grain).replace(',', ' '),
                            table=reversed(table), button='grain', target='grain', onclick1='onclick=',
                            onclick2='onclick=', onclick3='onclick=', onclick11='onclick=', onclick33='onclick=',
-                           bcolor='#ffa775', mright='450px', bimage='/../static/img/FFA775.png'
+                           bcolor='#ffa775', mright='450px'
                            )
 
 
@@ -232,7 +232,7 @@ def grain():
                            grain='{:,}'.format(stock.grain).replace(',', ' '), table=reversed(table),
                            button='grain', target='grain', onclick1='onclick=', onclick22='onclick=', onclick3='onclick=',
                            onclick11='onclick=', onclick33='onclick=', bcolor='#ffa775',
-                           mright='450px', bimage='/../static/img/FFA775.png'
+                           mright='450px'
                            )
 
 
@@ -279,7 +279,7 @@ def prod_add():
                            grain='{:,}'.format(stock.grain).replace(',', ' '),
                            button='prod', target='prod', onclick1='onclick=', onclick2='onclick=',
                            table=reversed(table), onclick11='onclick=', onclick22='onclick=', bcolor='#ffcd6b',
-                           mright='250px', bimage='/../static/img/FFCD6B.png'
+                           mright='250px'
                            )
 
 
@@ -299,7 +299,7 @@ def prod():
                            grain='{:,}'.format(stock.grain).replace(',', ' '),
                            button='prod', target='prod', onclick1='onclick=', onclick2='onclick=', onclick33='onclick=',
                            table=reversed(table), onclick11='onclick=', onclick22='onclick=', bcolor='#ffcd6b',
-                           mright='250px', bimage='/../static/img/FFCD6B.png'
+                           mright='250px'
                            )
 
 
@@ -467,6 +467,7 @@ def grain_edit():
         position.discount = float(grain_form.discount.data.replace(',', '.'))
         position.price = float(grain_form.price.data.replace(',', '.'))
         position.final_value = (grain_form.value.data - grain_form.value.data / 100 * position.discount)
+        position.cost = position.final_value * position.price
 
         db.session.commit()
 
