@@ -66,6 +66,7 @@ class Production(db.Model):
     bran = db.Column(db.Float(20), nullable=False)
     waste = db.Column(db.Float(20), nullable=False)
     second = db.Column(db.Float(20), nullable=False)
+    exit = db.Column(db.Float(20), nullable=False)
 
 
 class Stock(db.Model):
@@ -76,9 +77,9 @@ class Stock(db.Model):
     bran = db.Column(db.Float(20), nullable=False)
     waste = db.Column(db.Float(20), nullable=False)
     second = db.Column(db.Float(20), nullable=False)
-    grain =  db.Column(db.Float(20), nullable=False)
+    grain = db.Column(db.Float(20), nullable=False)
 
-# db.create_all()
+#db.create_all()
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -146,7 +147,8 @@ def real_add():
                            waste='{:,}'.format(stock.waste).replace(',', ' '),
                            grain='{:,}'.format(stock.grain).replace(',', ' '),
                            button='real', target='real', onclick2='onclick=', onclick3='onclick=',
-                           table=reversed(table), onclick22='onclick=', onclick33='onclick='
+                           table=reversed(table), onclick22='onclick=', onclick33='onclick=', bcolor='#a1ff92',
+                           mright='50px'
                            )
 
 
@@ -163,7 +165,8 @@ def real():
                            waste='{:,}'.format(stock.waste).replace(',', ' '),
                            grain='{:,}'.format(stock.grain).replace(',', ' '),
                            button='real', target='real', onclick11='onclick=', onclick2='onclick=', onclick3='onclick=',
-                           table=reversed(table), onclick22='onclick=', onclick33='onclick='
+                           table=reversed(table), onclick22='onclick=', onclick33='onclick=', bcolor='#a1ff92',
+                           mright='50px', bimage='/../static/img/A1FF92.png'
                            )
 
 
@@ -206,7 +209,8 @@ def grain_add():
                            waste='{:,}'.format(stock.waste).replace(',', ' '),
                            grain='{:,}'.format(stock.grain).replace(',', ' '),
                            table=reversed(table), button='grain', target='grain', onclick1='onclick=',
-                           onclick2='onclick=', onclick3='onclick=', onclick11='onclick=', onclick33='onclick='
+                           onclick2='onclick=', onclick3='onclick=', onclick11='onclick=', onclick33='onclick=',
+                           bcolor='#ffa775', mright='450px', bimage='/../static/img/FFA775.png'
                            )
 
 
@@ -218,6 +222,8 @@ def grain():
                                                  Grain.date >= dt.datetime.now() - dt.timedelta(
                                                      days=30)).order_by(Grain.date).all()
 
+
+
     return render_template('grain.html', title='Зерно', form=grain_form, first='{:,}'.format(stock.first).replace(',', ' '),
                            second='{:,}'.format(stock.second).replace(',', ' '),
                            highest='{:,}'.format(stock.highest).replace(',', ' '),
@@ -225,7 +231,8 @@ def grain():
                            waste='{:,}'.format(stock.waste).replace(',', ' '),
                            grain='{:,}'.format(stock.grain).replace(',', ' '), table=reversed(table),
                            button='grain', target='grain', onclick1='onclick=', onclick22='onclick=', onclick3='onclick=',
-                           onclick11='onclick=', onclick33='onclick='
+                           onclick11='onclick=', onclick33='onclick=', bcolor='#ffa775',
+                           mright='450px', bimage='/../static/img/FFA775.png'
                            )
 
 
@@ -245,7 +252,8 @@ def prod_add():
             first=prod_form.first.data,
             bran=prod_form.bran.data,
             waste=prod_form.waste.data,
-            second=prod_form.second.data
+            second=prod_form.second.data,
+            exit=(prod_form.highest.data + prod_form.first.data + prod_form.second.data)/((prod_form.highest.data + prod_form.first.data + prod_form.second.data + prod_form.bran.data + prod_form.waste.data)/100)
         )
 
         db.session.add(new_production)
@@ -270,7 +278,8 @@ def prod_add():
                            waste='{:,}'.format(stock.waste).replace(',', ' '),
                            grain='{:,}'.format(stock.grain).replace(',', ' '),
                            button='prod', target='prod', onclick1='onclick=', onclick2='onclick=',
-                           table=reversed(table), onclick11='onclick=', onclick22='onclick='
+                           table=reversed(table), onclick11='onclick=', onclick22='onclick=', bcolor='#ffcd6b',
+                           mright='250px', bimage='/../static/img/FFCD6B.png'
                            )
 
 
@@ -289,7 +298,8 @@ def prod():
                            waste='{:,}'.format(stock.waste).replace(',', ' '),
                            grain='{:,}'.format(stock.grain).replace(',', ' '),
                            button='prod', target='prod', onclick1='onclick=', onclick2='onclick=', onclick33='onclick=',
-                           table=reversed(table), onclick11='onclick=', onclick22='onclick='
+                           table=reversed(table), onclick11='onclick=', onclick22='onclick=', bcolor='#ffcd6b',
+                           mright='250px', bimage='/../static/img/FFCD6B.png'
                            )
 
 
@@ -528,6 +538,1389 @@ def prod_edit():
                            button='prod', target='prod', onclick1='onclick=', onclick2='onclick=',
                            table=reversed(table), onclick11='onclick=', onclick22='onclick='
                            )
+
+
+@app.route('/stat', methods=['GET', 'POST'])
+def stat():
+    stock = Stock.query.filter_by(id=1).first()
+    now_year = dt.datetime.now().year
+    past_year = (dt.datetime.now() - dt.timedelta(days=365)).year
+    before_past_year = (dt.datetime.now() - dt.timedelta(days=730)).year
+
+    grain_this_year = db.session.query(Grain).filter(
+        Grain.date <= f'{now_year}-12-31', Grain.date >= f'{now_year}-01-01').all()
+
+    grain_past_year = db.session.query(Grain).filter(
+        Grain.date <= f'{past_year}-12-31', Grain.date >= f'{past_year}-01-01').all()
+
+    grain_before_past_year = db.session.query(Grain).filter(
+        Grain.date <= f'{before_past_year}-12-31', Grain.date >= f'{before_past_year}-01-01').all()
+
+    grain_value_this_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                             'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+
+    grain_cost_this_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                            'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+
+    grain_value_past_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                             'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    grain_cost_past_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                            'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    grain_value_before_past_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                    'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    grain_cost_before_past_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                   'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    for i in grain_this_year:
+        if i.date.month == 1:
+            grain_value_this_year['jan'] += i.value
+            grain_cost_this_year['jan'] += i.cost
+        if i.date.month == 2:
+            grain_value_this_year['feb'] += i.value
+            grain_cost_this_year['feb'] += i.cost
+        if i.date.month == 3:
+            grain_value_this_year['mar'] += i.value
+            grain_cost_this_year['mar'] += i.cost
+        if i.date.month == 4:
+            grain_value_this_year['apr'] += i.value
+            grain_cost_this_year['apr'] += i.cost
+        if i.date.month == 5:
+            grain_value_this_year['may'] += i.value
+            grain_cost_this_year['may'] += i.cost
+        if i.date.month == 6:
+            grain_value_this_year['jun'] += i.value
+            grain_cost_this_year['jun'] += i.cost
+        if i.date.month == 7:
+            grain_value_this_year['jul'] += i.value
+            grain_cost_this_year['jul'] += i.cost
+        if i.date.month == 8:
+            grain_value_this_year['aug'] += i.value
+            grain_cost_this_year['aug'] += i.cost
+        if i.date.month == 9:
+            grain_value_this_year['sep'] += i.value
+            grain_cost_this_year['sep'] += i.cost
+        if i.date.month == 10:
+            grain_value_this_year['oct'] += i.value
+            grain_cost_this_year['oct'] += i.cost
+        if i.date.month == 11:
+            grain_value_this_year['nov'] += i.value
+            grain_cost_this_year['nov'] += i.cost
+        if i.date.month == 12:
+            grain_value_this_year['dec'] += i.value
+            grain_cost_this_year['dec'] += i.cost
+
+    for i in grain_past_year:
+        if i.date.month == 1:
+            grain_value_past_year['jan'] += i.value
+            grain_cost_past_year['jan'] += i.cost
+        if i.date.month == 2:
+            grain_value_past_year['feb'] += i.value
+            grain_cost_past_year['feb'] += i.cost
+        if i.date.month == 3:
+            grain_value_past_year['mar'] += i.value
+            grain_cost_past_year['mar'] += i.cost
+        if i.date.month == 4:
+            grain_value_past_year['apr'] += i.value
+            grain_cost_past_year['apr'] += i.cost
+        if i.date.month == 5:
+            grain_value_past_year['may'] += i.value
+            grain_cost_past_year['may'] += i.cost
+        if i.date.month == 6:
+            grain_value_past_year['jun'] += i.value
+            grain_cost_past_year['jun'] += i.cost
+        if i.date.month == 7:
+            grain_value_past_year['jul'] += i.value
+            grain_cost_past_year['jul'] += i.cost
+        if i.date.month == 8:
+            grain_value_past_year['aug'] += i.value
+            grain_cost_past_year['aug'] += i.cost
+        if i.date.month == 9:
+            grain_value_past_year['sep'] += i.value
+            grain_cost_past_year['sep'] += i.cost
+        if i.date.month == 10:
+            grain_value_past_year['oct'] += i.value
+            grain_cost_past_year['oct'] += i.cost
+        if i.date.month == 11:
+            grain_value_past_year['nov'] += i.value
+            grain_cost_past_year['nov'] += i.cost
+        if i.date.month == 12:
+            grain_value_past_year['dec'] += i.value
+            grain_cost_past_year['dec'] += i.cost
+
+    for i in grain_before_past_year:
+        if i.date.month == 1:
+            grain_value_before_past_year['jan'] += i.value
+            grain_cost_before_past_year['jan'] += i.cost
+        if i.date.month == 2:
+            grain_value_before_past_year['feb'] += i.value
+            grain_cost_before_past_year['feb'] += i.cost
+        if i.date.month == 3:
+            grain_value_before_past_year['mar'] += i.value
+            grain_cost_before_past_year['mar'] += i.cost
+        if i.date.month == 4:
+            grain_value_before_past_year['apr'] += i.value
+            grain_cost_before_past_year['apr'] += i.cost
+        if i.date.month == 5:
+            grain_value_before_past_year['may'] += i.value
+            grain_cost_before_past_year['may'] += i.cost
+        if i.date.month == 6:
+            grain_value_before_past_year['jun'] += i.value
+            grain_cost_before_past_year['jun'] += i.cost
+        if i.date.month == 7:
+            grain_value_before_past_year['jul'] += i.value
+            grain_cost_before_past_year['jul'] += i.cost
+        if i.date.month == 8:
+            grain_value_before_past_year['aug'] += i.value
+            grain_cost_before_past_year['aug'] += i.cost
+        if i.date.month == 9:
+            grain_value_before_past_year['sep'] += i.value
+            grain_cost_before_past_year['sep'] += i.cost
+        if i.date.month == 10:
+            grain_value_before_past_year['oct'] += i.value
+            grain_cost_before_past_year['oct'] += i.cost
+        if i.date.month == 11:
+            grain_value_before_past_year['nov'] += i.value
+            grain_cost_before_past_year['nov'] += i.cost
+        if i.date.month == 12:
+            grain_value_before_past_year['dec'] += i.value
+            grain_cost_before_past_year['dec'] += i.cost
+
+    grain_value_this_year_all = sum(grain_value_this_year.values())
+    grain_value_past_year_all = sum(grain_value_past_year.values())
+    grain_value_before_past_year_all = sum(grain_value_before_past_year.values())
+
+    grain_cost_this_year_all = sum(grain_cost_this_year.values())
+    grain_cost_past_year_all = sum(grain_cost_past_year.values())
+    grain_cost_before_past_year_all = sum(grain_cost_before_past_year.values())
+
+
+
+
+    production_this_year = db.session.query(Production).filter(
+        Production.date <= f'{now_year}-12-31', Production.date >= f'{now_year}-01-01').all()
+
+    production_past_year = db.session.query(Production).filter(
+        Production.date <= f'{past_year}-12-31', Production.date >= f'{past_year}-01-01').all()
+
+    production_before_past_year = db.session.query(Production).filter(
+        Production.date <= f'{before_past_year}-12-31', Production.date >= f'{before_past_year}-01-01').all()
+
+    production_highest_this_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                    'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    production_first_this_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                  'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    production_second_this_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                   'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    production_bran_this_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                 'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    production_waste_this_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                  'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    production_highest_past_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                    'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    production_first_past_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                  'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    production_second_past_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                   'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    production_bran_past_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                 'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    production_waste_past_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                  'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    production_highest_before_past_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                           'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    production_first_before_past_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                         'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    production_second_before_past_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                          'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    production_bran_before_past_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                        'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    production_waste_before_past_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                         'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    for i in production_this_year:
+        if i.date.month == 1:
+            production_highest_this_year['jan'] += i.highest
+            production_first_this_year['jan'] += i.first
+            production_second_this_year['jan'] += i.second
+            production_bran_this_year['jan'] += i.bran
+            production_waste_this_year['jan'] += i.waste
+
+        if i.date.month == 2:
+            production_highest_this_year['feb'] += i.highest
+            production_first_this_year['feb'] += i.first
+            production_second_this_year['feb'] += i.second
+            production_bran_this_year['feb'] += i.bran
+            production_waste_this_year['feb'] += i.waste
+
+        if i.date.month == 3:
+            production_highest_this_year['mar'] += i.highest
+            production_first_this_year['mar'] += i.first
+            production_second_this_year['mar'] += i.second
+            production_bran_this_year['mar'] += i.bran
+            production_waste_this_year['mar'] += i.waste
+
+        if i.date.month == 4:
+            production_highest_this_year['apr'] += i.highest
+            production_first_this_year['apr'] += i.first
+            production_second_this_year['apr'] += i.second
+            production_bran_this_year['apr'] += i.bran
+            production_waste_this_year['apr'] += i.waste
+
+        if i.date.month == 5:
+            production_highest_this_year['may'] += i.highest
+            production_first_this_year['may'] += i.first
+            production_second_this_year['may'] += i.second
+            production_bran_this_year['may'] += i.bran
+            production_waste_this_year['may'] += i.waste
+
+        if i.date.month == 6:
+            production_highest_this_year['jun'] += i.highest
+            production_first_this_year['jun'] += i.first
+            production_second_this_year['jun'] += i.second
+            production_bran_this_year['jun'] += i.bran
+            production_waste_this_year['jun'] += i.waste
+
+        if i.date.month == 7:
+            production_highest_this_year['jul'] += i.highest
+            production_first_this_year['jul'] += i.first
+            production_second_this_year['jul'] += i.second
+            production_bran_this_year['jul'] += i.bran
+            production_waste_this_year['jul'] += i.waste
+
+        if i.date.month == 8:
+            production_highest_this_year['aug'] += i.highest
+            production_first_this_year['aug'] += i.first
+            production_second_this_year['aug'] += i.second
+            production_bran_this_year['aug'] += i.bran
+            production_waste_this_year['aug'] += i.waste
+
+        if i.date.month == 9:
+            production_highest_this_year['sep'] += i.highest
+            production_first_this_year['sep'] += i.first
+            production_second_this_year['sep'] += i.second
+            production_bran_this_year['sep'] += i.bran
+            production_waste_this_year['sep'] += i.waste
+
+        if i.date.month == 10:
+            production_highest_this_year['oct'] += i.highest
+            production_first_this_year['oct'] += i.first
+            production_second_this_year['oct'] += i.second
+            production_bran_this_year['oct'] += i.bran
+            production_waste_this_year['oct'] += i.waste
+
+        if i.date.month == 11:
+            production_highest_this_year['nov'] += i.highest
+            production_first_this_year['nov'] += i.first
+            production_second_this_year['nov'] += i.second
+            production_bran_this_year['nov'] += i.bran
+            production_waste_this_year['nov'] += i.waste
+
+        if i.date.month == 12:
+            production_highest_this_year['dec'] += i.highest
+            production_first_this_year['dec'] += i.first
+            production_second_this_year['dec'] += i.second
+            production_bran_this_year['dec'] += i.bran
+            production_waste_this_year['dec'] += i.waste
+
+    for i in production_past_year:
+        if i.date.month == 1:
+            production_highest_past_year['jan'] += i.highest
+            production_first_past_year['jan'] += i.first
+            production_second_past_year['jan'] += i.second
+            production_bran_past_year['jan'] += i.bran
+            production_waste_past_year['jan'] += i.waste
+
+        if i.date.month == 2:
+            production_highest_past_year['feb'] += i.highest
+            production_first_past_year['feb'] += i.first
+            production_second_past_year['feb'] += i.second
+            production_bran_past_year['feb'] += i.bran
+            production_waste_past_year['feb'] += i.waste
+
+        if i.date.month == 3:
+            production_highest_past_year['mar'] += i.highest
+            production_first_past_year['mar'] += i.first
+            production_second_past_year['mar'] += i.second
+            production_bran_past_year['mar'] += i.bran
+            production_waste_past_year['mar'] += i.waste
+
+        if i.date.month == 4:
+            production_highest_past_year['apr'] += i.highest
+            production_first_past_year['apr'] += i.first
+            production_second_past_year['apr'] += i.second
+            production_bran_past_year['apr'] += i.bran
+            production_waste_past_year['apr'] += i.waste
+
+        if i.date.month == 5:
+            production_highest_past_year['may'] += i.highest
+            production_first_past_year['may'] += i.first
+            production_second_past_year['may'] += i.second
+            production_bran_past_year['may'] += i.bran
+            production_waste_past_year['may'] += i.waste
+
+        if i.date.month == 6:
+            production_highest_past_year['jun'] += i.highest
+            production_first_past_year['jun'] += i.first
+            production_second_past_year['jun'] += i.second
+            production_bran_past_year['jun'] += i.bran
+            production_waste_past_year['jun'] += i.waste
+
+        if i.date.month == 7:
+            production_highest_past_year['jul'] += i.highest
+            production_first_past_year['jul'] += i.first
+            production_second_past_year['jul'] += i.second
+            production_bran_past_year['jul'] += i.bran
+            production_waste_past_year['jul'] += i.waste
+
+        if i.date.month == 8:
+            production_highest_past_year['aug'] += i.highest
+            production_first_past_year['aug'] += i.first
+            production_second_past_year['aug'] += i.second
+            production_bran_past_year['aug'] += i.bran
+            production_waste_past_year['aug'] += i.waste
+
+        if i.date.month == 9:
+            production_highest_past_year['sep'] += i.highest
+            production_first_past_year['sep'] += i.first
+            production_second_past_year['sep'] += i.second
+            production_bran_past_year['sep'] += i.bran
+            production_waste_past_year['sep'] += i.waste
+
+        if i.date.month == 10:
+            production_highest_past_year['oct'] += i.highest
+            production_first_past_year['oct'] += i.first
+            production_second_past_year['oct'] += i.second
+            production_bran_past_year['oct'] += i.bran
+            production_waste_past_year['oct'] += i.waste
+
+        if i.date.month == 11:
+            production_highest_past_year['nov'] += i.highest
+            production_first_past_year['nov'] += i.first
+            production_second_past_year['nov'] += i.second
+            production_bran_past_year['nov'] += i.bran
+            production_waste_past_year['nov'] += i.waste
+
+        if i.date.month == 12:
+            production_highest_past_year['dec'] += i.highest
+            production_first_past_year['dec'] += i.first
+            production_second_past_year['dec'] += i.second
+            production_bran_past_year['dec'] += i.bran
+            production_waste_past_year['dec'] += i.waste
+
+    for i in production_before_past_year:
+
+        if i.date.month == 1:
+            production_highest_before_past_year['jan'] += i.highest
+            production_first_before_past_year['jan'] += i.first
+            production_second_before_past_year['jan'] += i.second
+            production_bran_before_past_year['jan'] += i.bran
+            production_waste_before_past_year['jan'] += i.waste
+
+        if i.date.month == 2:
+            production_highest_before_past_year['feb'] += i.highest
+            production_first_before_past_year['feb'] += i.first
+            production_second_before_past_year['feb'] += i.second
+            production_bran_before_past_year['feb'] += i.bran
+            production_waste_before_past_year['feb'] += i.waste
+
+        if i.date.month == 3:
+            production_highest_before_past_year['mar'] += i.highest
+            production_first_before_past_year['mar'] += i.first
+            production_second_before_past_year['mar'] += i.second
+            production_bran_before_past_year['mar'] += i.bran
+            production_waste_before_past_year['mar'] += i.waste
+
+        if i.date.month == 4:
+            production_highest_before_past_year['apr'] += i.highest
+            production_first_before_past_year['apr'] += i.first
+            production_second_before_past_year['apr'] += i.second
+            production_bran_before_past_year['apr'] += i.bran
+            production_waste_before_past_year['apr'] += i.waste
+
+        if i.date.month == 5:
+            production_highest_before_past_year['may'] += i.highest
+            production_first_before_past_year['may'] += i.first
+            production_second_before_past_year['may'] += i.second
+            production_bran_before_past_year['may'] += i.bran
+            production_waste_before_past_year['may'] += i.waste
+
+        if i.date.month == 6:
+            production_highest_before_past_year['jun'] += i.highest
+            production_first_before_past_year['jun'] += i.first
+            production_second_before_past_year['jun'] += i.second
+            production_bran_before_past_year['jun'] += i.bran
+            production_waste_before_past_year['jun'] += i.waste
+
+        if i.date.month == 7:
+            production_highest_before_past_year['jul'] += i.highest
+            production_first_before_past_year['jul'] += i.first
+            production_second_before_past_year['jul'] += i.second
+            production_bran_before_past_year['jul'] += i.bran
+            production_waste_before_past_year['jul'] += i.waste
+
+        if i.date.month == 8:
+            production_highest_before_past_year['aug'] += i.highest
+            production_first_before_past_year['aug'] += i.first
+            production_second_before_past_year['aug'] += i.second
+            production_bran_before_past_year['aug'] += i.bran
+            production_waste_before_past_year['aug'] += i.waste
+
+        if i.date.month == 9:
+            production_highest_before_past_year['sep'] += i.highest
+            production_first_before_past_year['sep'] += i.first
+            production_second_before_past_year['sep'] += i.second
+            production_bran_before_past_year['sep'] += i.bran
+            production_waste_before_past_year['sep'] += i.waste
+
+        if i.date.month == 10:
+            production_highest_before_past_year['oct'] += i.highest
+            production_first_before_past_year['oct'] += i.first
+            production_second_before_past_year['oct'] += i.second
+            production_bran_before_past_year['oct'] += i.bran
+            production_waste_before_past_year['oct'] += i.waste
+
+        if i.date.month == 11:
+            production_highest_before_past_year['nov'] += i.highest
+            production_first_before_past_year['nov'] += i.first
+            production_second_before_past_year['nov'] += i.second
+            production_bran_before_past_year['nov'] += i.bran
+            production_waste_before_past_year['nov'] += i.waste
+
+        if i.date.month == 12:
+            production_highest_before_past_year['dec'] += i.highest
+            production_first_before_past_year['dec'] += i.first
+            production_second_before_past_year['dec'] += i.second
+            production_bran_before_past_year['dec'] += i.bran
+            production_waste_before_past_year['dec'] += i.waste
+
+    production_highest_this_year_all = sum(production_highest_this_year.values())
+    production_highest_past_year_all = sum(production_highest_past_year.values())
+    production_highest_before_past_year_all = sum(production_highest_before_past_year.values())
+
+    production_first_this_year_all = sum(production_first_this_year.values())
+    production_first_past_year_all = sum(production_first_past_year.values())
+    production_first_before_past_year_all = sum(production_first_before_past_year.values())
+
+    production_second_this_year_all = sum(production_second_this_year.values())
+    production_second_past_year_all = sum(production_second_past_year.values())
+    production_second_before_past_year_all = sum(production_second_before_past_year.values())
+
+    production_bran_this_year_all = sum(production_bran_this_year.values())
+    production_bran_past_year_all = sum(production_bran_past_year.values())
+    production_bran_before_past_year_all = sum(production_bran_before_past_year.values())
+
+    production_waste_this_year_all = sum(production_waste_this_year.values())
+    production_waste_past_year_all = sum(production_waste_past_year.values())
+    production_waste_before_past_year_all = sum(production_waste_before_past_year.values())
+
+
+
+
+
+    realisation_this_year = db.session.query(Realisation).filter(
+        Realisation.date <= f'{now_year}-12-31', Realisation.date >= f'{now_year}-01-01').all()
+
+    realisation_past_year = db.session.query(Realisation).filter(
+        Realisation.date <= f'{past_year}-12-31', Realisation.date >= f'{past_year}-01-01').all()
+
+    realisation_before_past_year = db.session.query(Realisation).filter(
+        Realisation.date <= f'{before_past_year}-12-31', Realisation.date >= f'{before_past_year}-01-01').all()
+
+    realisation_value_highest_this_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                           'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    realisation_cost_highest_this_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                          'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    realisation_value_first_this_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                         'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    realisation_cost_first_this_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                        'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    realisation_value_second_this_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                          'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    realisation_cost_second_this_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                         'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    realisation_value_bran_this_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                        'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    realisation_cost_bran_this_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                       'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    realisation_value_waste_this_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                         'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    realisation_cost_waste_this_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                        'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    realisation_value_highest_past_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                           'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    realisation_cost_highest_past_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                          'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    realisation_value_first_past_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                         'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    realisation_cost_first_past_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                        'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    realisation_value_second_past_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                          'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    realisation_cost_second_past_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                         'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    realisation_value_bran_past_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                        'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    realisation_cost_bran_past_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                       'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    realisation_value_waste_past_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                         'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    realisation_cost_waste_past_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                        'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    realisation_value_highest_before_past_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                                  'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    realisation_cost_highest_before_past_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                                 'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    realisation_value_first_before_past_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                                'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    realisation_cost_first_before_past_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                               'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    realisation_value_second_before_past_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                                 'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    realisation_cost_second_before_past_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                                'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    realisation_value_bran_before_past_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                               'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    realisation_cost_bran_before_past_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                              'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    realisation_value_waste_before_past_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                                'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    realisation_cost_waste_before_past_year = {'jan': 0, 'feb': 0, 'mar': 0, 'apr': 0, 'may': 0, 'jun': 0,
+                                               'jul': 0, 'aug': 0, 'sep': 0, 'oct': 0, 'nov': 0, 'dec': 0}
+
+    for i in realisation_this_year:
+        if i.date.month == 1:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_this_year['jan'] += i.value
+                realisation_cost_highest_this_year['jan'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_this_year['jan'] += i.value
+                realisation_cost_first_this_year['jan'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_this_year['jan'] += i.value
+                realisation_cost_second_this_year['jan'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_this_year['jan'] += i.value
+                realisation_cost_bran_this_year['jan'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_this_year['jan'] += i.value
+                realisation_cost_waste_this_year['jan'] += i.cost
+
+        if i.date.month == 2:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_this_year['feb'] += i.value
+                realisation_cost_highest_this_year['feb'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_this_year['feb'] += i.value
+                realisation_cost_first_this_year['feb'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_this_year['feb'] += i.value
+                realisation_cost_second_this_year['feb'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_this_year['feb'] += i.value
+                realisation_cost_bran_this_year['feb'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_this_year['feb'] += i.value
+                realisation_cost_waste_this_year['feb'] += i.cost
+
+        if i.date.month == 3:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_this_year['mar'] += i.value
+                realisation_cost_highest_this_year['mar'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_this_year['mar'] += i.value
+                realisation_cost_first_this_year['mar'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_this_year['mar'] += i.value
+                realisation_cost_second_this_year['mar'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_this_year['mar'] += i.value
+                realisation_cost_bran_this_year['mar'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_this_year['mar'] += i.value
+                realisation_cost_waste_this_year['mar'] += i.cost
+
+        if i.date.month == 4:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_this_year['apr'] += i.value
+                realisation_cost_highest_this_year['apr'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_this_year['apr'] += i.value
+                realisation_cost_first_this_year['apr'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_this_year['apr'] += i.value
+                realisation_cost_second_this_year['apr'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_this_year['apr'] += i.value
+                realisation_cost_bran_this_year['apr'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_this_year['apr'] += i.value
+                realisation_cost_waste_this_year['apr'] += i.cost
+
+        if i.date.month == 5:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_this_year['may'] += i.value
+                realisation_cost_highest_this_year['may'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_this_year['may'] += i.value
+                realisation_cost_first_this_year['may'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_this_year['may'] += i.value
+                realisation_cost_second_this_year['may'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_this_year['may'] += i.value
+                realisation_cost_bran_this_year['may'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_this_year['may'] += i.value
+                realisation_cost_waste_this_year['may'] += i.cost
+
+        if i.date.month == 6:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_this_year['jun'] += i.value
+                realisation_cost_highest_this_year['jun'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_this_year['jun'] += i.value
+                realisation_cost_first_this_year['jun'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_this_year['jun'] += i.value
+                realisation_cost_second_this_year['jun'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_this_year['jun'] += i.value
+                realisation_cost_bran_this_year['jun'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_this_year['jun'] += i.value
+                realisation_cost_waste_this_year['jun'] += i.cost
+
+        if i.date.month == 7:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_this_year['jul'] += i.value
+                realisation_cost_highest_this_year['jul'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_this_year['jul'] += i.value
+                realisation_cost_first_this_year['jul'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_this_year['jul'] += i.value
+                realisation_cost_second_this_year['jul'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_this_year['jul'] += i.value
+                realisation_cost_bran_this_year['jul'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_this_year['jul'] += i.value
+                realisation_cost_waste_this_year['jul'] += i.cost
+
+        if i.date.month == 8:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_this_year['aug'] += i.value
+                realisation_cost_highest_this_year['aug'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_this_year['aug'] += i.value
+                realisation_cost_first_this_year['aug'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_this_year['aug'] += i.value
+                realisation_cost_second_this_year['aug'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_this_year['aug'] += i.value
+                realisation_cost_bran_this_year['aug'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_this_year['aug'] += i.value
+                realisation_cost_waste_this_year['aug'] += i.cost
+
+        if i.date.month == 9:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_this_year['sep'] += i.value
+                realisation_cost_highest_this_year['sep'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_this_year['sep'] += i.value
+                realisation_cost_first_this_year['sep'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_this_year['sep'] += i.value
+                realisation_cost_second_this_year['sep'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_this_year['sep'] += i.value
+                realisation_cost_bran_this_year['sep'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_this_year['sep'] += i.value
+                realisation_cost_waste_this_year['sep'] += i.cost
+
+        if i.date.month == 10:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_this_year['oct'] += i.value
+                realisation_cost_highest_this_year['oct'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_this_year['oct'] += i.value
+                realisation_cost_first_this_year['oct'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_this_year['oct'] += i.value
+                realisation_cost_second_this_year['oct'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_this_year['oct'] += i.value
+                realisation_cost_bran_this_year['oct'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_this_year['oct'] += i.value
+                realisation_cost_waste_this_year['oct'] += i.cost
+
+        if i.date.month == 11:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_this_year['nov'] += i.value
+                realisation_cost_highest_this_year['nov'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_this_year['nov'] += i.value
+                realisation_cost_first_this_year['nov'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_this_year['nov'] += i.value
+                realisation_cost_second_this_year['nov'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_this_year['nov'] += i.value
+                realisation_cost_bran_this_year['nov'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_this_year['nov'] += i.value
+                realisation_cost_waste_this_year['nov'] += i.cost
+
+        if i.date.month == 12:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_this_year['dec'] += i.value
+                realisation_cost_highest_this_year['dec'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_this_year['dec'] += i.value
+                realisation_cost_first_this_year['dec'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_this_year['dec'] += i.value
+                realisation_cost_second_this_year['dec'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_this_year['dec'] += i.value
+                realisation_cost_bran_this_year['dec'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_this_year['dec'] += i.value
+                realisation_cost_waste_this_year['dec'] += i.cost
+
+    for i in realisation_past_year:
+        if i.date.month == 1:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_past_year['jan'] += i.value
+                realisation_cost_highest_past_year['jan'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_past_year['jan'] += i.value
+                realisation_cost_first_past_year['jan'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_past_year['jan'] += i.value
+                realisation_cost_second_past_year['jan'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_past_year['jan'] += i.value
+                realisation_cost_bran_past_year['jan'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_past_year['jan'] += i.value
+                realisation_cost_waste_past_year['jan'] += i.cost
+
+        if i.date.month == 2:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_past_year['feb'] += i.value
+                realisation_cost_highest_past_year['feb'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_past_year['feb'] += i.value
+                realisation_cost_first_past_year['feb'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_past_year['feb'] += i.value
+                realisation_cost_second_past_year['feb'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_past_year['feb'] += i.value
+                realisation_cost_bran_past_year['feb'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_past_year['feb'] += i.value
+                realisation_cost_waste_past_year['feb'] += i.cost
+
+        if i.date.month == 3:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_past_year['mar'] += i.value
+                realisation_cost_highest_past_year['mar'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_past_year['mar'] += i.value
+                realisation_cost_first_past_year['mar'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_past_year['mar'] += i.value
+                realisation_cost_second_past_year['mar'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_past_year['mar'] += i.value
+                realisation_cost_bran_past_year['mar'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_past_year['mar'] += i.value
+                realisation_cost_waste_past_year['mar'] += i.cost
+
+        if i.date.month == 4:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_past_year['apr'] += i.value
+                realisation_cost_highest_past_year['apr'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_past_year['apr'] += i.value
+                realisation_cost_first_past_year['apr'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_past_year['apr'] += i.value
+                realisation_cost_second_past_year['apr'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_past_year['apr'] += i.value
+                realisation_cost_bran_past_year['apr'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_past_year['apr'] += i.value
+                realisation_cost_waste_past_year['apr'] += i.cost
+
+        if i.date.month == 5:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_past_year['may'] += i.value
+                realisation_cost_highest_past_year['may'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_past_year['may'] += i.value
+                realisation_cost_first_past_year['may'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_past_year['may'] += i.value
+                realisation_cost_second_past_year['may'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_past_year['may'] += i.value
+                realisation_cost_bran_past_year['may'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_past_year['may'] += i.value
+                realisation_cost_waste_past_year['may'] += i.cost
+
+        if i.date.month == 6:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_past_year['jun'] += i.value
+                realisation_cost_highest_past_year['jun'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_past_year['jun'] += i.value
+                realisation_cost_first_past_year['jun'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_past_year['jun'] += i.value
+                realisation_cost_second_past_year['jun'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_past_year['jun'] += i.value
+                realisation_cost_bran_past_year['jun'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_past_year['jun'] += i.value
+                realisation_cost_waste_past_year['jun'] += i.cost
+
+        if i.date.month == 7:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_past_year['jul'] += i.value
+                realisation_cost_highest_past_year['jul'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_past_year['jul'] += i.value
+                realisation_cost_first_past_year['jul'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_past_year['jul'] += i.value
+                realisation_cost_second_past_year['jul'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_past_year['jul'] += i.value
+                realisation_cost_bran_past_year['jul'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_past_year['jul'] += i.value
+                realisation_cost_waste_past_year['jul'] += i.cost
+
+        if i.date.month == 8:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_past_year['aug'] += i.value
+                realisation_cost_highest_past_year['aug'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_past_year['aug'] += i.value
+                realisation_cost_first_past_year['aug'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_past_year['aug'] += i.value
+                realisation_cost_second_past_year['aug'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_past_year['aug'] += i.value
+                realisation_cost_bran_past_year['aug'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_past_year['aug'] += i.value
+                realisation_cost_waste_past_year['aug'] += i.cost
+
+        if i.date.month == 9:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_past_year['sep'] += i.value
+                realisation_cost_highest_past_year['sep'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_past_year['sep'] += i.value
+                realisation_cost_first_past_year['sep'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_past_year['sep'] += i.value
+                realisation_cost_second_past_year['sep'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_past_year['sep'] += i.value
+                realisation_cost_bran_past_year['sep'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_past_year['sep'] += i.value
+                realisation_cost_waste_past_year['sep'] += i.cost
+
+        if i.date.month == 10:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_past_year['oct'] += i.value
+                realisation_cost_highest_past_year['oct'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_past_year['oct'] += i.value
+                realisation_cost_first_past_year['oct'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_past_year['oct'] += i.value
+                realisation_cost_second_past_year['oct'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_past_year['oct'] += i.value
+                realisation_cost_bran_past_year['oct'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_past_year['oct'] += i.value
+                realisation_cost_waste_past_year['oct'] += i.cost
+
+        if i.date.month == 11:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_past_year['nov'] += i.value
+                realisation_cost_highest_past_year['nov'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_past_year['nov'] += i.value
+                realisation_cost_first_past_year['nov'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_past_year['nov'] += i.value
+                realisation_cost_second_past_year['nov'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_past_year['nov'] += i.value
+                realisation_cost_bran_past_year['nov'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_past_year['nov'] += i.value
+                realisation_cost_waste_past_year['nov'] += i.cost
+
+        if i.date.month == 12:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_past_year['dec'] += i.value
+                realisation_cost_highest_past_year['dec'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_past_year['dec'] += i.value
+                realisation_cost_first_past_year['dec'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_past_year['dec'] += i.value
+                realisation_cost_second_past_year['dec'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_past_year['dec'] += i.value
+                realisation_cost_bran_past_year['dec'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_past_year['dec'] += i.value
+                realisation_cost_waste_past_year['dec'] += i.cost
+
+    for i in realisation_before_past_year:
+        if i.date.month == 1:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_before_past_year['jan'] += i.value
+                realisation_cost_highest_before_past_year['jan'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_before_past_year['jan'] += i.value
+                realisation_cost_first_before_past_year['jan'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_before_past_year['jan'] += i.value
+                realisation_cost_second_before_past_year['jan'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_before_past_year['jan'] += i.value
+                realisation_cost_bran_before_past_year['jan'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_before_past_year['jan'] += i.value
+                realisation_cost_waste_before_past_year['jan'] += i.cost
+
+        if i.date.month == 2:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_before_past_year['feb'] += i.value
+                realisation_cost_highest_before_past_year['feb'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_before_past_year['feb'] += i.value
+                realisation_cost_first_before_past_year['feb'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_before_past_year['feb'] += i.value
+                realisation_cost_second_before_past_year['feb'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_before_past_year['feb'] += i.value
+                realisation_cost_bran_before_past_year['feb'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_before_past_year['feb'] += i.value
+                realisation_cost_waste_before_past_year['feb'] += i.cost
+
+        if i.date.month == 3:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_before_past_year['mar'] += i.value
+                realisation_cost_highest_before_past_year['mar'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_before_past_year['mar'] += i.value
+                realisation_cost_first_before_past_year['mar'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_before_past_year['mar'] += i.value
+                realisation_cost_second_before_past_year['mar'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_before_past_year['mar'] += i.value
+                realisation_cost_bran_before_past_year['mar'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_before_past_year['mar'] += i.value
+                realisation_cost_waste_before_past_year['mar'] += i.cost
+
+        if i.date.month == 4:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_before_past_year['apr'] += i.value
+                realisation_cost_highest_before_past_year['apr'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_before_past_year['apr'] += i.value
+                realisation_cost_first_before_past_year['apr'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_before_past_year['apr'] += i.value
+                realisation_cost_second_before_past_year['apr'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_before_past_year['apr'] += i.value
+                realisation_cost_bran_before_past_year['apr'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_before_past_year['apr'] += i.value
+                realisation_cost_waste_before_past_year['apr'] += i.cost
+
+        if i.date.month == 5:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_before_past_year['may'] += i.value
+                realisation_cost_highest_before_past_year['may'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_before_past_year['may'] += i.value
+                realisation_cost_first_before_past_year['may'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_before_past_year['may'] += i.value
+                realisation_cost_second_past_year['may'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_before_past_year['may'] += i.value
+                realisation_cost_bran_past_year['may'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_before_past_year['may'] += i.value
+                realisation_cost_waste_before_past_year['may'] += i.cost
+
+        if i.date.month == 6:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_before_past_year['jun'] += i.value
+                realisation_cost_highest_before_past_year['jun'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_before_past_year['jun'] += i.value
+                realisation_cost_first_before_past_year['jun'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_before_past_year['jun'] += i.value
+                realisation_cost_second_before_past_year['jun'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_before_past_year['jun'] += i.value
+                realisation_cost_bran_before_past_year['jun'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_before_past_year['jun'] += i.value
+                realisation_cost_waste_before_past_year['jun'] += i.cost
+
+        if i.date.month == 7:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_before_past_year['jul'] += i.value
+                realisation_cost_highest_before_past_year['jul'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_before_past_year['jul'] += i.value
+                realisation_cost_first_before_past_year['jul'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_before_past_year['jul'] += i.value
+                realisation_cost_second_before_past_year['jul'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_before_past_year['jul'] += i.value
+                realisation_cost_bran_before_past_year['jul'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_before_past_year['jul'] += i.value
+                realisation_cost_waste_before_past_year['jul'] += i.cost
+
+        if i.date.month == 8:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_before_past_year['aug'] += i.value
+                realisation_cost_highest_before_past_year['aug'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_before_past_year['aug'] += i.value
+                realisation_cost_first_before_past_year['aug'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_before_past_year['aug'] += i.value
+                realisation_cost_second_before_past_year['aug'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_before_past_year['aug'] += i.value
+                realisation_cost_bran_before_past_year['aug'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_before_past_year['aug'] += i.value
+                realisation_cost_waste_before_past_year['aug'] += i.cost
+
+        if i.date.month == 9:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_before_past_year['sep'] += i.value
+                realisation_cost_highest_before_past_year['sep'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_before_past_year['sep'] += i.value
+                realisation_cost_first_before_past_year['sep'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_before_past_year['sep'] += i.value
+                realisation_cost_second_before_past_year['sep'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_before_past_year['sep'] += i.value
+                realisation_cost_bran_before_past_year['sep'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_before_past_year['sep'] += i.value
+                realisation_cost_waste_before_past_year['sep'] += i.cost
+
+        if i.date.month == 10:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_before_past_year['oct'] += i.value
+                realisation_cost_highest_before_past_year['oct'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_before_past_year['oct'] += i.value
+                realisation_cost_first_before_past_year['oct'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_before_past_year['oct'] += i.value
+                realisation_cost_second_before_past_year['oct'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_before_past_year['oct'] += i.value
+                realisation_cost_bran_before_past_year['oct'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_before_past_year['oct'] += i.value
+                realisation_cost_waste_before_past_year['oct'] += i.cost
+
+        if i.date.month == 11:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_before_past_year['nov'] += i.value
+                realisation_cost_highest_before_past_year['nov'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_before_past_year['nov'] += i.value
+                realisation_cost_first_before_past_year['nov'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_before_past_year['nov'] += i.value
+                realisation_cost_second_before_past_year['nov'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_before_past_year['nov'] += i.value
+                realisation_cost_bran_before_past_year['nov'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_past_year['nov'] += i.value
+                realisation_cost_waste_past_year['nov'] += i.cost
+
+        if i.date.month == 12:
+            if i.production == 'Высший сорт':
+                realisation_value_highest_before_past_year['dec'] += i.value
+                realisation_cost_highest_before_past_year['dec'] += i.cost
+            if i.production == 'Первый сорт':
+                realisation_value_first_before_past_year['dec'] += i.value
+                realisation_cost_first_before_past_year['dec'] += i.cost
+            if i.production == 'Второй сорт':
+                realisation_value_second_before_past_year['dec'] += i.value
+                realisation_cost_second_before_past_year['dec'] += i.cost
+            if i.production == 'Отруби':
+                realisation_value_bran_before_past_year['dec'] += i.value
+                realisation_cost_bran_before_past_year['dec'] += i.cost
+            if i.production == 'Зерноотходы':
+                realisation_value_waste_before_past_year['dec'] += i.value
+                realisation_cost_waste_before_past_year['dec'] += i.cost
+
+    realisation_value_highest_this_year_all = sum(realisation_value_highest_this_year.values())
+    realisation_cost_highest_this_year_all = sum(realisation_cost_highest_this_year.values())
+
+    realisation_value_first_this_year_all = sum(realisation_value_first_this_year.values())
+    realisation_cost_first_this_year_all = sum(realisation_cost_first_this_year.values())
+
+    realisation_value_second_this_year_all = sum(realisation_value_second_this_year.values())
+    realisation_cost_second_this_year_all = sum(realisation_cost_second_this_year.values())
+
+    realisation_value_bran_this_year_all = sum(realisation_value_bran_this_year.values())
+    realisation_cost_bran_this_year_all = sum(realisation_cost_bran_this_year.values())
+
+    realisation_value_waste_this_year_all = sum(realisation_value_waste_this_year.values())
+    realisation_cost_waste_this_year_all = sum(realisation_cost_waste_this_year.values())
+
+    realisation_value_highest_past_year_all = sum(realisation_value_highest_past_year.values())
+    realisation_cost_highest_past_year_all = sum(realisation_cost_highest_past_year.values())
+
+    realisation_value_first_past_year_all = sum(realisation_value_first_past_year.values())
+    realisation_cost_first_past_year_all = sum(realisation_cost_first_past_year.values())
+
+    realisation_value_second_past_year_all = sum(realisation_value_second_past_year.values())
+    realisation_cost_second_past_year_all = sum(realisation_cost_second_past_year.values())
+
+    realisation_value_bran_past_year_all = sum(realisation_value_bran_past_year.values())
+    realisation_cost_bran_past_year_all = sum(realisation_cost_bran_past_year.values())
+
+    realisation_value_waste_past_year_all = sum(realisation_value_waste_past_year.values())
+    realisation_cost_waste_past_year_all = sum(realisation_cost_waste_past_year.values())
+
+    realisation_value_highest_before_past_year_all = sum(realisation_value_highest_before_past_year.values())
+    realisation_cost_highest_before_past_year_all = sum(realisation_cost_highest_before_past_year.values())
+
+    realisation_value_first_before_past_year_all = sum(realisation_value_first_before_past_year.values())
+    realisation_cost_first_before_past_year_all = sum(realisation_cost_first_before_past_year.values())
+
+    realisation_value_second_before_past_year_all = sum(realisation_value_second_before_past_year.values())
+    realisation_cost_second_before_past_year_all = sum(realisation_cost_second_before_past_year.values())
+
+    realisation_value_bran_before_past_year_all = sum(realisation_value_bran_before_past_year.values())
+    realisation_cost_bran_before_past_year_all = sum(realisation_cost_bran_before_past_year.values())
+
+    realisation_value_waste_before_past_year_all = sum(realisation_value_waste_before_past_year.values())
+    realisation_cost_waste_before_past_year_all = sum(realisation_cost_waste_before_past_year.values())
+
+
+    return render_template('stat.html', first='{:,}'.format(stock.first).replace(',', ' '),
+                           second='{:,}'.format(stock.second).replace(',', ' '),
+                           highest='{:,}'.format(stock.highest).replace(',', ' '),
+                           bran='{:,}'.format(stock.bran).replace(',', ' '),
+                           waste='{:,}'.format(stock.waste).replace(',', ' '),
+                           grain='{:,}'.format(stock.grain).replace(',', ' '),
+                           onclick1='onclick=', onclick2='onclick=', onclick3='onclick=',
+                           onclick11='onclick=', onclick22='onclick=', onclick33='onclick=',
+                           bcolor='#add8e6', title='Статистика', mright='650px',
+                           grain_value_this_year=grain_value_this_year, now_year=now_year,
+                           grain_cost_this_year=grain_cost_this_year,
+                           grain_value_this_year_all=grain_value_this_year_all,
+                           grain_value_past_year_all=grain_value_past_year_all,
+                           grain_value_before_past_year_all=grain_value_before_past_year_all,
+                           grain_cost_this_year_all=grain_cost_this_year_all,
+                           grain_cost_past_year_all=grain_cost_past_year_all,
+                           grain_cost_before_past_year_all=grain_cost_before_past_year_all,
+                           grain_value_past_year=grain_value_past_year, past_year=past_year,
+                           grain_cost_past_year=grain_cost_past_year,
+                           grain_value_before_past_year=grain_value_before_past_year, before_past_year=before_past_year,
+                           grain_cost_before_past_year=grain_cost_before_past_year,
+                           production_highest_this_year=production_highest_this_year,
+                           production_first_this_year=production_first_this_year,
+                           production_second_this_year=production_second_this_year,
+                           production_bran_this_year=production_bran_this_year,
+                           production_waste_this_year=production_waste_this_year,
+                           production_highest_past_year=production_highest_past_year,
+                           production_first_past_year=production_first_past_year,
+                           production_second_past_year=production_second_past_year,
+                           production_bran_past_year=production_bran_past_year,
+                           production_waste_past_year=production_waste_past_year,
+                           production_highest_before_past_year=production_highest_before_past_year,
+                           production_first_before_past_year=production_first_before_past_year,
+                           production_second_before_past_year=production_second_before_past_year,
+                           production_bran_before_past_year=production_bran_before_past_year,
+                           production_waste_before_past_year=production_waste_before_past_year,
+                           production_highest_this_year_all=production_highest_this_year_all,
+                           production_highest_past_year_all=production_highest_past_year_all,
+                           production_highest_before_past_year_all=production_highest_before_past_year_all,
+                           production_first_this_year_all=production_first_this_year_all,
+                           production_first_past_year_all=production_first_past_year_all,
+                           production_first_before_past_year_all=production_first_before_past_year_all,
+                           production_second_this_year_all=production_second_this_year_all,
+                           production_second_past_year_all=production_second_past_year_all,
+                           production_second_before_past_year_all=production_second_before_past_year_all,
+                           production_bran_this_year_all=production_bran_this_year_all,
+                           production_bran_past_year_all=production_bran_past_year_all,
+                           production_bran_before_past_year_all=production_bran_before_past_year_all,
+                           production_waste_this_year_all=production_waste_this_year_all,
+                           production_waste_past_year_all=production_waste_past_year_all,
+                           production_waste_before_past_year_all=production_waste_before_past_year_all,
+                           realisation_value_highest_this_year=realisation_value_highest_this_year,
+                           realisation_cost_highest_this_year=realisation_cost_highest_this_year,
+                           realisation_value_first_this_year=realisation_value_first_this_year,
+                           realisation_cost_first_this_year=realisation_cost_first_this_year,
+                           realisation_value_second_this_year=realisation_value_second_this_year,
+                           realisation_cost_second_this_year=realisation_cost_second_this_year,
+                           realisation_value_bran_this_year=realisation_value_bran_this_year,
+                           realisation_cost_bran_this_year=realisation_cost_bran_this_year,
+                           realisation_value_waste_this_year=realisation_value_waste_this_year,
+                           realisation_cost_waste_this_year=realisation_cost_waste_this_year,
+                           realisation_value_highest_past_year=realisation_value_highest_past_year,
+                           realisation_cost_highest_past_year=realisation_cost_highest_past_year,
+                           realisation_value_first_past_year=realisation_value_first_past_year,
+                           realisation_cost_first_past_year=realisation_cost_first_past_year,
+                           realisation_value_second_past_year=realisation_value_second_past_year,
+                           realisation_cost_second_past_year=realisation_cost_second_past_year,
+                           realisation_value_bran_past_year=realisation_value_bran_past_year,
+                           realisation_cost_bran_past_year=realisation_cost_bran_past_year,
+                           realisation_value_waste_past_year=realisation_value_waste_past_year,
+                           realisation_cost_waste_past_year=realisation_cost_waste_past_year,
+                           realisation_value_highest_before_past_year=realisation_value_highest_before_past_year,
+                           realisation_cost_highest_before_past_year=realisation_cost_highest_before_past_year,
+                           realisation_value_first_before_past_year=realisation_value_first_before_past_year,
+                           realisation_cost_first_before_past_year=realisation_cost_first_before_past_year,
+                           realisation_value_second_before_past_year=realisation_value_second_before_past_year,
+                           realisation_cost_second_before_past_year=realisation_cost_second_before_past_year,
+                           realisation_value_bran_before_past_year=realisation_value_bran_before_past_year,
+                           realisation_cost_bran_before_past_year=realisation_cost_bran_before_past_year,
+                           realisation_value_waste_before_past_year=realisation_value_waste_before_past_year,
+                           realisation_cost_waste_before_past_year=realisation_cost_waste_before_past_year,
+                           realisation_value_highest_this_year_all=realisation_value_highest_this_year_all,
+                           realisation_cost_highest_this_year_all=realisation_cost_highest_this_year_all,
+                           realisation_value_first_this_year_all=realisation_value_first_this_year_all,
+                           realisation_cost_first_this_year_all=realisation_cost_first_this_year_all,
+                           realisation_value_second_this_year_all=realisation_value_second_this_year_all,
+                           realisation_cost_second_this_year_all=realisation_cost_second_this_year_all,
+                           realisation_value_bran_this_year_all=realisation_value_bran_this_year_all,
+                           realisation_cost_bran_this_year_all=realisation_cost_bran_this_year_all,
+                           realisation_value_waste_this_year_all=realisation_value_waste_this_year_all,
+                           realisation_cost_waste_this_year_all=realisation_cost_waste_this_year_all,
+                           realisation_value_highest_past_year_all=realisation_value_highest_past_year_all,
+                           realisation_cost_highest_past_year_all=realisation_cost_highest_past_year_all,
+                           realisation_value_first_past_year_all=realisation_value_first_past_year_all,
+                           realisation_cost_first_past_year_all=realisation_cost_first_past_year_all,
+                           realisation_value_second_past_year_all=realisation_value_second_past_year_all,
+                           realisation_cost_second_past_year_all=realisation_cost_second_past_year_all,
+                           realisation_value_bran_past_year_all=realisation_value_bran_past_year_all,
+                           realisation_cost_bran_past_year_all=realisation_cost_bran_past_year_all,
+                           realisation_value_waste_past_year_all=realisation_value_waste_past_year_all,
+                           realisation_cost_waste_past_year_all=realisation_cost_waste_past_year_all,
+                           realisation_value_highest_before_past_year_all=realisation_value_highest_before_past_year_all,
+                           realisation_cost_highest_before_past_year_all=realisation_cost_highest_before_past_year_all,
+                           realisation_value_first_before_past_year_all=realisation_value_first_before_past_year_all,
+                           realisation_cost_first_before_past_year_all=realisation_cost_first_before_past_year_all,
+                           realisation_value_second_before_past_year_all=realisation_value_second_before_past_year_all,
+                           realisation_cost_second_before_past_year_all=realisation_cost_second_before_past_year_all,
+                           realisation_value_bran_before_past_year_all=realisation_value_bran_before_past_year_all,
+                           realisation_cost_bran_before_past_year_all=realisation_cost_bran_before_past_year_all,
+                           realisation_value_waste_before_past_year_all=realisation_value_waste_before_past_year_all,
+                           realisation_cost_waste_before_past_year_all=realisation_cost_waste_before_past_year_all,
+    )
+
+
+zerno = db.session.query(Grain).all()
+virab = db.session.query(Production).all()
+zernoves = 0
+prodves = 0
+for i in zerno:
+    zernoves += i.value
+for i in virab:
+    prodves += (i.highest + i.first + i.second + i.bran + i.waste)
+
+print(f'Сейчас на складе {zernoves - prodves} кг. зерна')
+
+
 
 
 if __name__ == '__main__':

@@ -1,3 +1,5 @@
+<div class="col-md-8 col-sm-12" >
+
 <table class="table table-hover counter">
         <thead>
           <tr>
@@ -8,6 +10,7 @@
             <th scope="col" class="rghtalgn">Отруби</th>
             <th scope="col" class="rghtalgn">З. отходы</th>
             <th scope="col" class="rghtalgn"">Второй</th>
+              <th scope="col" class="rghtalgn"">Выход</th>
             <th scope="col" class="rghtalgn""></th>
             <th scope="col" class="rghtalgn""></th>
 
@@ -24,6 +27,7 @@
             <td class="rghtalgn">{{line.bran}}</td>
             <td class="rghtalgn">{{line.waste}}</td>
             <td class="rghtalgn">{{line.second}}</td>
+            <td class="rghtalgn">{{line.exit | jround()}}</td>
             <td><a href="#" data-toggle="modal" title="Удалить" data-target="#test"
                    onclick="aTestFunction({{line.id}}, {{line.highest}}, {{line.first}}, {{line.bran}}, {{line.waste}},
                    {{line.second}})">✘</a></td>
@@ -63,9 +67,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <h3 class="modal-title" id="grainLabel">Вы уверены что нужно удалить позицию?</h3>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+
             </div>
             <div class="modal-body">
 
@@ -90,3 +92,5 @@
           </div>
         </div>
       </div>
+
+        </div>

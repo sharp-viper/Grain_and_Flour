@@ -1,0 +1,1190 @@
+{% extends 'index.html' %}
+
+
+
+
+
+
+{% block table %}
+
+<div class="fluid-container">
+  <div class="row">
+
+
+<h1>{{ now_year }} год</h1>
+
+
+<div class="col-md-3"></div>
+
+<div class="col-md-6 col-sm-12">
+<hr>
+
+<h3>Зерно ({{ now_year }})</h3>
+
+<table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Зашло (кг)</th>
+            <th scope="col">На сумму (руб.)</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+              <th>Январь</th>
+              <td>{{ '{:,}'.format(grain_value_this_year['jan']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(grain_cost_this_year['jan'] | jround()).replace(',', ' ')  }}</td>
+          </tr>
+          <tr>
+              <th>Февраль</th>
+              <td>{{ '{:,}'.format(grain_value_this_year['feb']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(grain_cost_this_year['feb'] | jround()).replace(',', ' ') }}</td>
+          </tr>
+        <tr>
+              <th>Март</th>
+            <td>{{ '{:,}'.format(grain_value_this_year['mar']).replace(',', ' ')  }}</td>
+            <td>{{ '{:,}'.format(grain_cost_this_year['mar'] | jround()).replace(',', ' ') }}</td>
+          </tr>
+        <tr>
+              <th>Апрель</th>
+            <td>{{ '{:,}'.format(grain_value_this_year['apr']).replace(',', ' ')  }}</td>
+            <td>{{ '{:,}'.format(grain_cost_this_year['apr'] | jround()).replace(',', ' ') }}</td>
+          </tr>
+        <tr>
+              <th>Май</th>
+            <td>{{ '{:,}'.format(grain_value_this_year['may']).replace(',', ' ')  }}</td>
+            <td>{{ '{:,}'.format(grain_cost_this_year['may'] | jround()).replace(',', ' ') }}</td>
+          </tr>
+        <tr>
+              <th>Июнь</th>
+            <td>{{ '{:,}'.format(grain_value_this_year['jun']).replace(',', ' ')  }}</td>
+            <td>{{ '{:,}'.format(grain_cost_this_year['jun'] | jround()).replace(',', ' ') }}</td>
+          </tr>
+        <tr>
+              <th>Июль</th>
+            <td>{{ '{:,}'.format(grain_value_this_year['jul']).replace(',', ' ')  }}</td>
+            <td>{{ '{:,}'.format(grain_cost_this_year['jul'] | jround()).replace(',', ' ') }}</td>
+          </tr>
+        <tr>
+              <th>Август</th>
+            <td>{{ '{:,}'.format(grain_value_this_year['aug']).replace(',', ' ')  }}</td>
+            <td>{{ '{:,}'.format(grain_cost_this_year['aug'] | jround()).replace(',', ' ') }}</td>
+          </tr>
+        <tr>
+              <th>Сентябрь</th>
+            <td>{{ '{:,}'.format(grain_value_this_year['sep']).replace(',', ' ')  }}</td>
+            <td>{{ '{:,}'.format(grain_cost_this_year['sep'] | jround()).replace(',', ' ') }}</td>
+          </tr>
+        <tr>
+              <th>Октябрь</th>
+            <td>{{ '{:,}'.format(grain_value_this_year['oct']).replace(',', ' ')  }}</td>
+            <td>{{ '{:,}'.format(grain_cost_this_year['oct'] | jround()).replace(',', ' ') }}</td>
+          </tr>
+        <tr>
+              <th>Ноябрь</th>
+            <td>{{ '{:,}'.format(grain_value_this_year['nov']).replace(',', ' ')  }}</td>
+            <td>{{ '{:,}'.format(grain_cost_this_year['nov'] | jround()).replace(',', ' ') }}</td>
+          </tr>
+        <tr>
+              <th>Декабрь</th>
+            <td>{{ '{:,}'.format(grain_value_this_year['dec']).replace(',', ' ')  }}</td>
+            <td>{{ '{:,}'.format(grain_cost_this_year['dec'] | jround()).replace(',', ' ') }}</td>
+          </tr>
+
+         <tr>
+              <th style="color: red">Итого</th>
+            <td style="color: red">{{ '{:,}'.format(grain_value_this_year_all).replace(',', ' ')  }}</td>
+            <td style="color: red">{{ '{:,}'.format(grain_cost_this_year_all | jround()).replace(',', ' ') }}</td>
+          </tr>
+
+        </tbody>
+      </table>
+
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<div class="fluid-container">
+  <div class="row">
+
+
+
+<div class="col-md-3"></div>
+
+<div class="col-md-7 col-sm-12">
+
+
+<h3>Выработка ({{ now_year }})</h3>
+
+<table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Высший сорт (кг)</th>
+            <th scope="col">Первый сорт (кг)</th>
+            <th scope="col">Второй сорт (кг)</th>
+            <th scope="col">Отруби (кг)</th>
+            <th scope="col">Зерноотходы (кг)</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+              <th>Январь</th>
+              <td>{{ '{:,}'.format(production_highest_this_year['jan']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_this_year['jan']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_this_year['jan']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_this_year['jan']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_this_year['jan']).replace(',', ' ')  }}</td>
+          </tr>
+          <tr>
+              <th>Февраль</th>
+              <td>{{ '{:,}'.format(production_highest_this_year['feb']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_this_year['feb']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_this_year['feb']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_this_year['feb']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_this_year['feb']).replace(',', ' ')  }}</td>
+          </tr>
+        <tr>
+              <th>Март</th>
+              <td>{{ '{:,}'.format(production_highest_this_year['mar']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_this_year['mar']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_this_year['mar']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_this_year['mar']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_this_year['mar']).replace(',', ' ')  }}</td>
+          </tr>
+        <tr>
+              <th>Апрель</th>
+              <td>{{ '{:,}'.format(production_highest_this_year['apr']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_this_year['apr']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_this_year['apr']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_this_year['apr']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_this_year['apr']).replace(',', ' ')  }}</td>
+          </tr>
+        <tr>
+              <th>Май</th>
+              <td>{{ '{:,}'.format(production_highest_this_year['may']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_this_year['may']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_this_year['may']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_this_year['may']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_this_year['may']).replace(',', ' ')  }}</td>
+          </tr>
+        <tr>
+              <th>Июнь</th>
+              <td>{{ '{:,}'.format(production_highest_this_year['jun']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_this_year['jun']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_this_year['jun']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_this_year['jun']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_this_year['jun']).replace(',', ' ')  }}</td>
+          </tr>
+        <tr>
+              <th>Июль</th>
+              <td>{{ '{:,}'.format(production_highest_this_year['jul']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_this_year['jul']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_this_year['jul']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_this_year['jul']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_this_year['jul']).replace(',', ' ')  }}</td>
+          </tr>
+        <tr>
+              <th>Август</th>
+              <td>{{ '{:,}'.format(production_highest_this_year['aug']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_this_year['aug']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_this_year['aug']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_this_year['aug']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_this_year['aug']).replace(',', ' ')  }}</td>
+          </tr>
+        <tr>
+              <th>Сентябрь</th>
+              <td>{{ '{:,}'.format(production_highest_this_year['sep']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_this_year['sep']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_this_year['sep']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_this_year['sep']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_this_year['sep']).replace(',', ' ')  }}</td>
+          </tr>
+        <tr>
+              <th>Октябрь</th>
+              <td>{{ '{:,}'.format(production_highest_this_year['oct']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_this_year['oct']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_this_year['oct']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_this_year['oct']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_this_year['oct']).replace(',', ' ')  }}</td>
+          </tr>
+        <tr>
+              <th>Ноябрь</th>
+              <td>{{ '{:,}'.format(production_highest_this_year['nov']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_this_year['nov']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_this_year['nov']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_this_year['nov']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_this_year['nov']).replace(',', ' ')  }}</td>
+          </tr>
+        <tr>
+              <th>Декабрь</th>
+              <td>{{ '{:,}'.format(production_highest_this_year['dec']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_this_year['dec']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_this_year['dec']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_this_year['dec']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_this_year['dec']).replace(',', ' ')  }}</td>
+          </tr>
+        <tr>
+              <th style="color: red">Итого</th>
+              <td style="color: red">{{ '{:,}'.format(production_highest_this_year_all).replace(',', ' ')  }}</td>
+              <td style="color: red">{{ '{:,}'.format(production_first_this_year_all).replace(',', ' ')  }}</td>
+              <td style="color: red">{{ '{:,}'.format(production_second_this_year_all).replace(',', ' ')  }}</td>
+              <td style="color: red">{{ '{:,}'.format(production_bran_this_year_all).replace(',', ' ')  }}</td>
+              <td style="color: red">{{ '{:,}'.format(production_waste_this_year_all).replace(',', ' ')  }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+
+</div>
+
+
+</div>
+
+</div>
+
+
+
+
+<div class="fluid-container">
+  <div class="row">
+
+
+
+<div class="col-md-3"></div>
+
+<div class="col-md-8 col-sm-12">
+
+
+<h3>Реализация ({{ now_year }})</h3>
+
+<table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Высший сорт</th>
+            <th scope="col">Первый сорт</th>
+            <th scope="col">Второй сорт</th>
+            <th scope="col">Отруби</th>
+            <th scope="col">Зерноотходы</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+              <th>Январь</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_this_year['jan']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_highest_this_year['jan']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_this_year['jan']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_first_this_year['jan']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_this_year['jan']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_second_this_year['jan']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_this_year['jan']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_bran_this_year['jan']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_this_year['jan']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_waste_this_year['jan']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+          <tr>
+              <th>Февраль</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_this_year['feb']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_highest_this_year['feb']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_this_year['feb']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_first_this_year['feb']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_this_year['feb']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_second_this_year['feb']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_this_year['feb']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_bran_this_year['feb']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_this_year['feb']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_waste_this_year['feb']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+        <tr>
+              <th>Март</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_this_year['mar']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_highest_this_year['mar']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_this_year['mar']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_first_this_year['mar']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_this_year['mar']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_second_this_year['mar']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_this_year['mar']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_bran_this_year['mar']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_this_year['mar']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_waste_this_year['mar']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+        <tr>
+              <th>Апрель</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_this_year['apr']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_highest_this_year['apr']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_this_year['apr']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_first_this_year['apr']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_this_year['apr']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_second_this_year['apr']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_this_year['apr']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_bran_this_year['apr']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_this_year['apr']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_waste_this_year['apr']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+        <tr>
+              <th>Май</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_this_year['may']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_highest_this_year['may']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_this_year['may']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_first_this_year['may']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_this_year['may']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_second_this_year['may']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_this_year['may']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_bran_this_year['may']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_this_year['may']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_waste_this_year['may']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+        <tr>
+              <th>Июнь</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_this_year['jun']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_highest_this_year['jun']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_this_year['jun']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_first_this_year['jun']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_this_year['jun']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_second_this_year['jun']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_this_year['jun']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_bran_this_year['jun']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_this_year['jun']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_waste_this_year['jun']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+        <tr>
+              <th>Июль</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_this_year['jul']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_highest_this_year['jul']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_this_year['jul']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_first_this_year['jul']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_this_year['jul']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_second_this_year['jul']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_this_year['jul']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_bran_this_year['jul']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_this_year['jul']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_waste_this_year['jul']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+        <tr>
+              <th>Август</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_this_year['aug']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_highest_this_year['aug']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_this_year['aug']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_first_this_year['aug']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_this_year['aug']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_second_this_year['aug']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_this_year['aug']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_bran_this_year['aug']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_this_year['aug']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_waste_this_year['aug']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+        <tr>
+              <th>Сентябрь</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_this_year['sep']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_highest_this_year['sep']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_this_year['sep']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_first_this_year['sep']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_this_year['sep']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_second_this_year['sep']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_this_year['sep']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_bran_this_year['sep']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_this_year['sep']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_waste_this_year['sep']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+        <tr>
+              <th>Октябрь</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_this_year['oct']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_highest_this_year['oct']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_this_year['oct']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_first_this_year['oct']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_this_year['oct']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_second_this_year['oct']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_this_year['oct']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_bran_this_year['oct']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_this_year['oct']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_waste_this_year['oct']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+        <tr>
+              <th>Ноябрь</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_this_year['nov']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_highest_this_year['nov']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_this_year['nov']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_first_this_year['nov']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_this_year['nov']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_second_this_year['nov']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_this_year['nov']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_bran_this_year['nov']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_this_year['nov']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_waste_this_year['nov']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+        <tr>
+              <th>Декабрь</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_this_year['dec']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_highest_this_year['dec']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_this_year['dec']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_first_this_year['dec']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_this_year['dec']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_second_this_year['dec']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_this_year['dec']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_bran_this_year['dec']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_this_year['dec']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_waste_this_year['dec']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+
+        <tr>
+              <th style="color: red">Итого</th>
+              <td style="color: red">{{ '{:,}'.format(realisation_value_highest_this_year_all).replace(',', ' ')  }} кг. <br> {{ '{:,}'.format(realisation_cost_highest_this_year_all).replace(',', ' ')  }} руб.</td>
+              <td style="color: red">{{ '{:,}'.format(realisation_value_first_this_year_all).replace(',', ' ')  }} кг. <br> {{ '{:,}'.format(realisation_cost_first_this_year_all).replace(',', ' ')  }} руб.</td>
+              <td style="color: red">{{ '{:,}'.format(realisation_value_second_this_year_all).replace(',', ' ')  }} кг. <br> {{ '{:,}'.format(realisation_cost_second_this_year_all).replace(',', ' ')  }} руб.</td>
+              <td style="color: red">{{ '{:,}'.format(realisation_value_bran_this_year_all).replace(',', ' ')  }} кг. <br> {{ '{:,}'.format(realisation_cost_bran_this_year_all).replace(',', ' ')  }} руб.</td>
+              <td style="color: red">{{ '{:,}'.format(realisation_value_waste_this_year_all).replace(',', ' ')  }} кг. <br> {{ '{:,}'.format(realisation_cost_waste_this_year_all).replace(',', ' ')  }} руб.</td>
+          </tr>
+        </tbody>
+      </table>
+
+
+</div>
+
+
+</div>
+
+</div>
+
+
+
+
+
+
+
+<div class="fluid-container">
+
+<div class="row">
+
+
+
+
+<div class="col-md-3"></div>
+
+<div class="col-md-6 col-sm-12" >
+<hr>
+<h1>{{ past_year }} год</h1>
+<hr>
+<h3>Зерно ({{ past_year }})</h3>
+
+<table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Зашло (кг)</th>
+            <th scope="col">На сумму (руб.)</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+              <th>Январь</th>
+              <td>{{ '{:,}'.format(grain_value_past_year['jan']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(grain_cost_past_year['jan'] | jround()).replace(',', ' ')  }}</td>
+          </tr>
+          <tr>
+              <th>Февраль</th>
+              <td>{{ '{:,}'.format(grain_value_past_year['feb']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(grain_cost_past_year['feb'] | jround()).replace(',', ' ') }}</td>
+          </tr>
+        <tr>
+              <th>Март</th>
+            <td>{{ '{:,}'.format(grain_value_past_year['mar']).replace(',', ' ')  }}</td>
+            <td>{{ '{:,}'.format(grain_cost_past_year['mar'] | jround()).replace(',', ' ') }}</td>
+          </tr>
+        <tr>
+              <th>Апрель</th>
+            <td>{{ '{:,}'.format(grain_value_past_year['apr']).replace(',', ' ')  }}</td>
+            <td>{{ '{:,}'.format(grain_cost_past_year['apr'] | jround()).replace(',', ' ') }}</td>
+          </tr>
+        <tr>
+              <th>Май</th>
+            <td>{{ '{:,}'.format(grain_value_past_year['may']).replace(',', ' ')  }}</td>
+            <td>{{ '{:,}'.format(grain_cost_past_year['may'] | jround()).replace(',', ' ') }}</td>
+          </tr>
+        <tr>
+              <th>Июнь</th>
+            <td>{{ '{:,}'.format(grain_value_past_year['jun']).replace(',', ' ')  }}</td>
+            <td>{{ '{:,}'.format(grain_cost_past_year['jun'] | jround()).replace(',', ' ') }}</td>
+          </tr>
+        <tr>
+              <th>Июль</th>
+            <td>{{ '{:,}'.format(grain_value_past_year['jul']).replace(',', ' ')  }}</td>
+            <td>{{ '{:,}'.format(grain_cost_past_year['jul'] | jround()).replace(',', ' ') }}</td>
+          </tr>
+        <tr>
+              <th>Август</th>
+            <td>{{ '{:,}'.format(grain_value_past_year['aug']).replace(',', ' ')  }}</td>
+            <td>{{ '{:,}'.format(grain_cost_past_year['aug'] | jround()).replace(',', ' ') }}</td>
+          </tr>
+        <tr>
+              <th>Сентябрь</th>
+            <td>{{ '{:,}'.format(grain_value_past_year['sep']).replace(',', ' ')  }}</td>
+            <td>{{ '{:,}'.format(grain_cost_past_year['sep'] | jround()).replace(',', ' ') }}</td>
+          </tr>
+        <tr>
+              <th>Октябрь</th>
+            <td>{{ '{:,}'.format(grain_value_past_year['oct']).replace(',', ' ')  }}</td>
+            <td>{{ '{:,}'.format(grain_cost_past_year['oct'] | jround()).replace(',', ' ') }}</td>
+          </tr>
+        <tr>
+              <th>Ноябрь</th>
+            <td>{{ '{:,}'.format(grain_value_past_year['nov']).replace(',', ' ')  }}</td>
+            <td>{{ '{:,}'.format(grain_cost_past_year['nov'] | jround()).replace(',', ' ') }}</td>
+          </tr>
+        <tr>
+              <th>Декабрь</th>
+            <td>{{ '{:,}'.format(grain_value_past_year['dec']).replace(',', ' ')  }}</td>
+            <td>{{ '{:,}'.format(grain_cost_past_year['dec'] | jround()).replace(',', ' ') }}</td>
+          </tr>
+        <tr>
+              <th style="color: red">Итого</th>
+            <td style="color: red">{{ '{:,}'.format(grain_value_past_year_all).replace(',', ' ')  }}</td>
+            <td style="color: red">{{ '{:,}'.format(grain_cost_past_year_all | jround()).replace(',', ' ') }}</td>
+          </tr>
+
+
+        </tbody>
+      </table>
+
+
+</div>
+</div>
+
+</div>
+
+
+
+
+<div class="fluid-container">
+  <div class="row">
+
+
+
+<div class="col-md-3"></div>
+
+<div class="col-md-7 col-sm-12">
+
+
+<h3>Выработка ({{ past_year }})</h3>
+
+<table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Высший сорт (кг)</th>
+            <th scope="col">Первый сорт (кг)</th>
+            <th scope="col">Второй сорт (кг)</th>
+            <th scope="col">Отруби (кг)</th>
+            <th scope="col">Зерноотходы (кг)</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+              <th>Январь</th>
+              <td>{{ '{:,}'.format(production_highest_past_year['jan']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_past_year['jan']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_past_year['jan']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_past_year['jan']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_past_year['jan']).replace(',', ' ')  }}</td>
+          </tr>
+          <tr>
+              <th>Февраль</th>
+              <td>{{ '{:,}'.format(production_highest_past_year['feb']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_past_year['feb']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_past_year['feb']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_past_year['feb']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_past_year['feb']).replace(',', ' ')  }}</td>
+          </tr>
+        <tr>
+              <th>Март</th>
+              <td>{{ '{:,}'.format(production_highest_past_year['mar']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_past_year['mar']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_past_year['mar']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_past_year['mar']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_past_year['mar']).replace(',', ' ')  }}</td>
+          </tr>
+        <tr>
+              <th>Апрель</th>
+              <td>{{ '{:,}'.format(production_highest_past_year['apr']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_past_year['apr']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_past_year['apr']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_past_year['apr']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_past_year['apr']).replace(',', ' ')  }}</td>
+          </tr>
+        <tr>
+              <th>Май</th>
+              <td>{{ '{:,}'.format(production_highest_past_year['may']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_past_year['may']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_past_year['may']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_past_year['may']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_past_year['may']).replace(',', ' ')  }}</td>
+          </tr>
+        <tr>
+              <th>Июнь</th>
+              <td>{{ '{:,}'.format(production_highest_past_year['jun']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_past_year['jun']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_past_year['jun']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_past_year['jun']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_past_year['jun']).replace(',', ' ')  }}</td>
+          </tr>
+        <tr>
+              <th>Июль</th>
+              <td>{{ '{:,}'.format(production_highest_past_year['jul']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_past_year['jul']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_past_year['jul']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_past_year['jul']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_past_year['jul']).replace(',', ' ')  }}</td>
+          </tr>
+        <tr>
+              <th>Август</th>
+              <td>{{ '{:,}'.format(production_highest_past_year['aug']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_past_year['aug']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_past_year['aug']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_past_year['aug']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_past_year['aug']).replace(',', ' ')  }}</td>
+          </tr>
+        <tr>
+              <th>Сентябрь</th>
+              <td>{{ '{:,}'.format(production_highest_past_year['sep']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_past_year['sep']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_past_year['sep']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_past_year['sep']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_past_year['sep']).replace(',', ' ')  }}</td>
+          </tr>
+        <tr>
+              <th>Октябрь</th>
+              <td>{{ '{:,}'.format(production_highest_past_year['oct']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_past_year['oct']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_past_year['oct']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_past_year['oct']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_past_year['oct']).replace(',', ' ')  }}</td>
+          </tr>
+        <tr>
+              <th>Ноябрь</th>
+              <td>{{ '{:,}'.format(production_highest_past_year['nov']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_past_year['nov']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_past_year['nov']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_past_year['nov']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_past_year['nov']).replace(',', ' ')  }}</td>
+          </tr>
+        <tr>
+              <th>Декабрь</th>
+              <td>{{ '{:,}'.format(production_highest_past_year['dec']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_past_year['dec']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_past_year['dec']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_past_year['dec']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_past_year['dec']).replace(',', ' ')  }}</td>
+          </tr>
+        <tr>
+              <th style="color: red">Итого</th>
+              <td style="color: red">{{ '{:,}'.format(production_highest_past_year_all).replace(',', ' ')  }}</td>
+              <td style="color: red">{{ '{:,}'.format(production_first_past_year_all).replace(',', ' ')  }}</td>
+              <td style="color: red">{{ '{:,}'.format(production_second_past_year_all).replace(',', ' ')  }}</td>
+              <td style="color: red">{{ '{:,}'.format(production_bran_past_year_all).replace(',', ' ')  }}</td>
+              <td style="color: red">{{ '{:,}'.format(production_waste_past_year_all).replace(',', ' ')  }}</td>
+          </tr>
+
+        </tbody>
+      </table>
+
+
+</div>
+
+
+</div>
+
+</div>
+
+
+
+
+<div class="fluid-container">
+  <div class="row">
+
+
+
+<div class="col-md-3"></div>
+
+<div class="col-md-8 col-sm-12">
+
+
+<h3>Реализация ({{ past_year }})</h3>
+
+<table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Высший сорт</th>
+            <th scope="col">Первый сорт</th>
+            <th scope="col">Второй сорт</th>
+            <th scope="col">Отруби</th>
+            <th scope="col">Зерноотходы</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+              <th>Январь</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_past_year['jan']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_highest_past_year['jan']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_past_year['jan']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_first_past_year['jan']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_past_year['jan']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_second_past_year['jan']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_past_year['jan']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_bran_past_year['jan']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_past_year['jan']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_waste_past_year['jan']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+          <tr>
+              <th>Февраль</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_past_year['feb']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_highest_past_year['feb']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_past_year['feb']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_first_past_year['feb']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_past_year['feb']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_second_past_year['feb']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_past_year['feb']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_bran_past_year['feb']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_past_year['feb']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_waste_past_year['feb']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+        <tr>
+              <th>Март</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_past_year['mar']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_highest_past_year['mar']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_past_year['mar']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_first_past_year['mar']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_past_year['mar']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_second_past_year['mar']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_past_year['mar']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_bran_past_year['mar']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_past_year['mar']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_waste_past_year['mar']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+        <tr>
+              <th>Апрель</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_past_year['apr']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_highest_past_year['apr']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_past_year['apr']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_first_past_year['apr']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_past_year['apr']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_second_past_year['apr']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_past_year['apr']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_bran_past_year['apr']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_past_year['apr']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_waste_past_year['apr']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+        <tr>
+              <th>Май</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_past_year['may']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_highest_past_year['may']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_past_year['may']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_first_past_year['may']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_past_year['may']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_second_past_year['may']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_past_year['may']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_bran_past_year['may']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_past_year['may']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_waste_past_year['may']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+        <tr>
+              <th>Июнь</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_past_year['jun']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_highest_past_year['jun']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_past_year['jun']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_first_past_year['jun']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_past_year['jun']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_second_past_year['jun']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_past_year['jun']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_bran_past_year['jun']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_past_year['jun']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_waste_past_year['jun']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+        <tr>
+              <th>Июль</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_past_year['jul']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_highest_past_year['jul']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_past_year['jul']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_first_past_year['jul']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_past_year['jul']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_second_past_year['jul']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_past_year['jul']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_bran_past_year['jul']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_past_year['jul']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_waste_past_year['jul']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+        <tr>
+              <th>Август</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_past_year['aug']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_highest_past_year['aug']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_past_year['aug']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_first_past_year['aug']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_past_year['aug']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_second_past_year['aug']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_past_year['aug']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_bran_past_year['aug']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_past_year['aug']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_waste_past_year['aug']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+        <tr>
+              <th>Сентябрь</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_past_year['sep']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_highest_past_year['sep']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_past_year['sep']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_first_past_year['sep']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_past_year['sep']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_second_past_year['sep']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_past_year['sep']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_bran_past_year['sep']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_past_year['sep']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_waste_past_year['sep']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+        <tr>
+              <th>Октябрь</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_past_year['oct']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_highest_past_year['oct']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_past_year['oct']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_first_past_year['oct']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_past_year['oct']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_second_past_year['oct']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_past_year['oct']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_bran_past_year['oct']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_past_year['oct']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_waste_past_year['oct']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+        <tr>
+              <th>Ноябрь</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_past_year['nov']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_highest_past_year['nov']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_past_year['nov']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_first_past_year['nov']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_past_year['nov']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_second_past_year['nov']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_past_year['nov']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_bran_past_year['nov']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_past_year['nov']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_waste_past_year['nov']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+        <tr>
+              <th>Декабрь</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_past_year['dec']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_highest_past_year['dec']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_past_year['dec']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_first_past_year['dec']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_past_year['dec']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_second_past_year['dec']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_past_year['dec']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_bran_past_year['dec']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_past_year['dec']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_waste_past_year['dec']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+        <tr>
+              <th style="color: red">Итого</th>
+              <td style="color: red">{{ '{:,}'.format(realisation_value_highest_past_year_all).replace(',', ' ')  }} кг. <br>{{ '{:,}'.format(realisation_cost_highest_past_year_all).replace(',', ' ')  }} руб.</td>
+              <td style="color: red">{{ '{:,}'.format(realisation_value_first_past_year_all).replace(',', ' ')  }} кг. <br> {{ '{:,}'.format(realisation_cost_first_past_year_all).replace(',', ' ')  }} руб.</td>
+              <td style="color: red">{{ '{:,}'.format(realisation_value_second_past_year_all).replace(',', ' ')  }} кг. <br> {{ '{:,}'.format(realisation_cost_second_past_year_all).replace(',', ' ')  }} руб.</td>
+              <td style="color: red">{{ '{:,}'.format(realisation_value_bran_past_year_all).replace(',', ' ')  }} кг. <br> {{ '{:,}'.format(realisation_cost_bran_past_year_all).replace(',', ' ')  }} руб.</td>
+              <td style="color: red">{{ '{:,}'.format(realisation_value_waste_past_year_all).replace(',', ' ')  }} кг. <br> {{ '{:,}'.format(realisation_cost_waste_past_year_all).replace(',', ' ')  }} руб.</td>
+          </tr>
+        </tbody>
+      </table>
+
+
+</div>
+
+
+</div>
+
+</div>
+
+
+
+
+
+
+<div class="fluid-container">
+
+<div class="row">
+
+
+
+
+<div class="col-md-3"></div>
+
+<div class="col-md-6 col-sm-12" >
+<hr>
+<h1>{{ before_past_year }} год</h1>
+<hr>
+<h3>Зерно ({{ before_past_year }})</h3>
+
+<table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Зашло (кг)</th>
+            <th scope="col">На сумму (руб.)</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+              <th>Январь</th>
+              <td>{{ '{:,}'.format(grain_value_before_past_year['jan']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(grain_cost_before_past_year['jan'] | jround()).replace(',', ' ')  }}</td>
+          </tr>
+          <tr>
+              <th>Февраль</th>
+              <td>{{ '{:,}'.format(grain_value_before_past_year['feb']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(grain_cost_before_past_year['feb'] | jround()).replace(',', ' ') }}</td>
+          </tr>
+        <tr>
+              <th>Март</th>
+            <td>{{ '{:,}'.format(grain_value_before_past_year['mar']).replace(',', ' ')  }}</td>
+            <td>{{ '{:,}'.format(grain_cost_before_past_year['mar'] | jround()).replace(',', ' ') }}</td>
+          </tr>
+        <tr>
+              <th>Апрель</th>
+            <td>{{ '{:,}'.format(grain_value_before_past_year['apr']).replace(',', ' ')  }}</td>
+            <td>{{ '{:,}'.format(grain_cost_before_past_year['apr'] | jround()).replace(',', ' ') }}</td>
+          </tr>
+        <tr>
+              <th>Май</th>
+            <td>{{ '{:,}'.format(grain_value_before_past_year['may']).replace(',', ' ')  }}</td>
+            <td>{{ '{:,}'.format(grain_cost_before_past_year['may'] | jround()).replace(',', ' ') }}</td>
+          </tr>
+        <tr>
+              <th>Июнь</th>
+            <td>{{ '{:,}'.format(grain_value_before_past_year['jun']).replace(',', ' ')  }}</td>
+            <td>{{ '{:,}'.format(grain_cost_before_past_year['jun'] | jround()).replace(',', ' ') }}</td>
+          </tr>
+        <tr>
+              <th>Июль</th>
+            <td>{{ '{:,}'.format(grain_value_before_past_year['jul']).replace(',', ' ')  }}</td>
+            <td>{{ '{:,}'.format(grain_cost_before_past_year['jul'] | jround()).replace(',', ' ') }}</td>
+          </tr>
+        <tr>
+              <th>Август</th>
+            <td>{{ '{:,}'.format(grain_value_before_past_year['aug']).replace(',', ' ')  }}</td>
+            <td>{{ '{:,}'.format(grain_cost_before_past_year['aug'] | jround()).replace(',', ' ') }}</td>
+          </tr>
+        <tr>
+              <th>Сентябрь</th>
+            <td>{{ '{:,}'.format(grain_value_before_past_year['sep']).replace(',', ' ')  }}</td>
+            <td>{{ '{:,}'.format(grain_cost_before_past_year['sep'] | jround()).replace(',', ' ') }}</td>
+          </tr>
+        <tr>
+              <th>Октябрь</th>
+            <td>{{ '{:,}'.format(grain_value_before_past_year['oct']).replace(',', ' ')  }}</td>
+            <td>{{ '{:,}'.format(grain_cost_before_past_year['oct'] | jround()).replace(',', ' ') }}</td>
+          </tr>
+        <tr>
+              <th>Ноябрь</th>
+            <td>{{ '{:,}'.format(grain_value_before_past_year['nov']).replace(',', ' ')  }}</td>
+            <td>{{ '{:,}'.format(grain_cost_before_past_year['nov'] | jround()).replace(',', ' ') }}</td>
+          </tr>
+        <tr>
+              <th>Декабрь</th>
+            <td>{{ '{:,}'.format(grain_value_before_past_year['dec']).replace(',', ' ')  }}</td>
+            <td>{{ '{:,}'.format(grain_cost_before_past_year['dec'] | jround()).replace(',', ' ') }}</td>
+          </tr>
+        <tr>
+              <th style="color: red">Итого</th>
+            <td style="color: red">{{ '{:,}'.format(grain_value_before_past_year_all).replace(',', ' ')  }}</td>
+            <td style="color: red">{{ '{:,}'.format(grain_cost_before_past_year_all | jround()).replace(',', ' ') }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+
+</div>
+</div>
+
+</div>
+
+
+
+<div class="fluid-container">
+  <div class="row">
+
+
+
+<div class="col-md-3"></div>
+
+<div class="col-md-7 col-sm-12">
+
+
+<h3>Выработка ({{ before_past_year }})</h3>
+
+<table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Высший сорт (кг)</th>
+            <th scope="col">Первый сорт (кг)</th>
+            <th scope="col">Второй сорт (кг)</th>
+            <th scope="col">Отруби (кг)</th>
+            <th scope="col">Зерноотходы (кг)</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+              <th>Январь</th>
+              <td>{{ '{:,}'.format(production_highest_before_past_year['jan']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_before_past_year['jan']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_before_past_year['jan']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_before_past_year['jan']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_before_past_year['jan']).replace(',', ' ')  }}</td>
+          </tr>
+          <tr>
+              <th>Февраль</th>
+              <td>{{ '{:,}'.format(production_highest_before_past_year['feb']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_before_past_year['feb']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_before_past_year['feb']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_before_past_year['feb']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_before_past_year['feb']).replace(',', ' ')  }}</td>
+          </tr>
+        <tr>
+              <th>Март</th>
+              <td>{{ '{:,}'.format(production_highest_before_past_year['mar']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_before_past_year['mar']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_before_past_year['mar']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_before_past_year['mar']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_before_past_year['mar']).replace(',', ' ')  }}</td>
+          </tr>
+        <tr>
+              <th>Апрель</th>
+              <td>{{ '{:,}'.format(production_highest_before_past_year['apr']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_before_past_year['apr']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_before_past_year['apr']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_before_past_year['apr']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_before_past_year['apr']).replace(',', ' ')  }}</td>
+          </tr>
+        <tr>
+              <th>Май</th>
+              <td>{{ '{:,}'.format(production_highest_before_past_year['may']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_before_past_year['may']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_before_past_year['may']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_before_past_year['may']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_before_past_year['may']).replace(',', ' ')  }}</td>
+          </tr>
+        <tr>
+              <th>Июнь</th>
+              <td>{{ '{:,}'.format(production_highest_before_past_year['jun']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_before_past_year['jun']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_before_past_year['jun']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_before_past_year['jun']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_before_past_year['jun']).replace(',', ' ')  }}</td>
+          </tr>
+        <tr>
+              <th>Июль</th>
+              <td>{{ '{:,}'.format(production_highest_before_past_year['jul']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_before_past_year['jul']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_before_past_year['jul']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_before_past_year['jul']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_before_past_year['jul']).replace(',', ' ')  }}</td>
+          </tr>
+        <tr>
+              <th>Август</th>
+              <td>{{ '{:,}'.format(production_highest_before_past_year['aug']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_before_past_year['aug']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_before_past_year['aug']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_before_past_year['aug']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_before_past_year['aug']).replace(',', ' ')  }}</td>
+          </tr>
+        <tr>
+              <th>Сентябрь</th>
+              <td>{{ '{:,}'.format(production_highest_before_past_year['sep']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_before_past_year['sep']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_before_past_year['sep']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_before_past_year['sep']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_before_past_year['sep']).replace(',', ' ')  }}</td>
+          </tr>
+        <tr>
+              <th>Октябрь</th>
+              <td>{{ '{:,}'.format(production_highest_before_past_year['oct']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_before_past_year['oct']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_before_past_year['oct']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_before_past_year['oct']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_before_past_year['oct']).replace(',', ' ')  }}</td>
+          </tr>
+        <tr>
+              <th>Ноябрь</th>
+              <td>{{ '{:,}'.format(production_highest_before_past_year['nov']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_before_past_year['nov']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_before_past_year['nov']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_before_past_year['nov']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_before_past_year['nov']).replace(',', ' ')  }}</td>
+          </tr>
+        <tr>
+              <th>Декабрь</th>
+              <td>{{ '{:,}'.format(production_highest_before_past_year['dec']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_first_before_past_year['dec']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_second_before_past_year['dec']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_bran_before_past_year['dec']).replace(',', ' ')  }}</td>
+              <td>{{ '{:,}'.format(production_waste_before_past_year['dec']).replace(',', ' ')  }}</td>
+          </tr>
+        <tr>
+              <th style="color: red">Итого</th>
+              <td style="color: red">{{ '{:,}'.format(production_highest_before_past_year_all).replace(',', ' ')  }}</td>
+              <td style="color: red">{{ '{:,}'.format(production_first_before_past_year_all).replace(',', ' ')  }}</td>
+              <td style="color: red">{{ '{:,}'.format(production_second_before_past_year_all).replace(',', ' ')  }}</td>
+              <td style="color: red">{{ '{:,}'.format(production_bran_before_past_year_all).replace(',', ' ')  }}</td>
+              <td style="color: red">{{ '{:,}'.format(production_waste_before_past_year_all).replace(',', ' ')  }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+
+</div>
+
+
+</div>
+
+</div>
+
+
+
+
+<div class="fluid-container">
+  <div class="row">
+
+
+
+<div class="col-md-3"></div>
+
+<div class="col-md-8 col-sm-12">
+
+
+<h3>Реализация ({{ before_past_year }})</h3>
+
+<table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Высший сорт</th>
+            <th scope="col">Первый сорт</th>
+            <th scope="col">Второй сорт</th>
+            <th scope="col">Отруби</th>
+            <th scope="col">Зерноотходы</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+              <th>Январь</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_before_past_year['jan']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_highest_before_past_year['jan']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_before_past_year['jan']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_first_before_past_year['jan']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_before_past_year['jan']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_second_before_past_year['jan']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_before_past_year['jan']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_bran_before_past_year['jan']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_before_past_year['jan']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_waste_before_past_year['jan']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+          <tr>
+              <th>Февраль</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_before_past_year['feb']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_highest_before_past_year['feb']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_before_past_year['feb']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_first_before_past_year['feb']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_before_past_year['feb']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_second_before_past_year['feb']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_before_past_year['feb']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_bran_before_past_year['feb']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_before_past_year['feb']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_waste_before_past_year['feb']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+        <tr>
+              <th>Март</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_before_past_year['mar']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_highest_before_past_year['mar']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_before_past_year['mar']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_first_before_past_year['mar']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_before_past_year['mar']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_second_before_past_year['mar']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_before_past_year['mar']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_bran_before_past_year['mar']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_before_past_year['mar']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_waste_before_past_year['mar']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+        <tr>
+              <th>Апрель</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_before_past_year['apr']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_highest_before_past_year['apr']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_before_past_year['apr']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_first_before_past_year['apr']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_before_past_year['apr']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_second_before_past_year['apr']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_before_past_year['apr']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_bran_before_past_year['apr']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_before_past_year['apr']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_waste_before_past_year['apr']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+        <tr>
+              <th>Май</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_before_past_year['may']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_highest_before_past_year['may']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_before_past_year['may']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_first_before_past_year['may']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_before_past_year['may']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_second_before_past_year['may']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_before_past_year['may']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_bran_before_past_year['may']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_before_past_year['may']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_waste_before_past_year['may']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+        <tr>
+              <th>Июнь</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_before_past_year['jun']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_highest_before_past_year['jun']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_before_past_year['jun']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_first_before_past_year['jun']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_before_past_year['jun']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_second_before_past_year['jun']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_before_past_year['jun']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_bran_before_past_year['jun']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_before_past_year['jun']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_waste_before_past_year['jun']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+        <tr>
+              <th>Июль</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_before_past_year['jul']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_highest_before_past_year['jul']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_before_past_year['jul']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_first_before_past_year['jul']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_before_past_year['jul']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_second_before_past_year['jul']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_before_past_year['jul']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_bran_past_year['jul']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_before_past_year['jul']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_waste_past_year['jul']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+        <tr>
+              <th>Август</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_before_past_year['aug']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_highest_before_past_year['aug']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_before_past_year['aug']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_first_before_past_year['aug']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_before_past_year['aug']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_second_before_past_year['aug']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_before_past_year['aug']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_bran_before_past_year['aug']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_before_past_year['aug']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_waste_before_past_year['aug']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+        <tr>
+              <th>Сентябрь</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_before_past_year['sep']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_highest_before_past_year['sep']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_before_past_year['sep']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_first_before_past_year['sep']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_before_past_year['sep']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_second_before_past_year['sep']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_before_past_year['sep']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_bran_before_past_year['sep']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_before_past_year['sep']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_waste_before_past_year['sep']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+        <tr>
+              <th>Октябрь</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_before_past_year['oct']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_highest_before_past_year['oct']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_before_past_year['oct']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_first_before_past_year['oct']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_before_past_year['oct']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_second_before_past_year['oct']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_before_past_year['oct']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_bran_before_past_year['oct']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_before_past_year['oct']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_waste_before_past_year['oct']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+        <tr>
+              <th>Ноябрь</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_before_past_year['nov']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_highest_before_past_year['nov']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_before_past_year['nov']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_first_before_past_year['nov']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_before_past_year['nov']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_second_before_past_year['nov']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_before_past_year['nov']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_bran_before_past_year['nov']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_before_past_year['nov']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_waste_before_past_year['nov']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+        <tr>
+              <th>Декабрь</th>
+              <td>{{ '{:,}'.format(realisation_value_highest_before_past_year['dec']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_highest_before_past_year['dec']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_first_before_past_year['dec']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_first_before_past_year['dec']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_second_before_past_year['dec']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_second_before_past_year['dec']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_bran_before_past_year['dec']).replace(',', ' ')  }} кг. <br><span style="color: #2E8B57"> {{ '{:,}'.format(realisation_cost_bran_before_past_year['dec']).replace(',', ' ')  }} руб.</span></td>
+              <td>{{ '{:,}'.format(realisation_value_waste_before_past_year['dec']).replace(',', ' ')  }} кг. <br> <span style="color: #2E8B57">{{ '{:,}'.format(realisation_cost_waste_before_past_year['dec']).replace(',', ' ')  }} руб.</span></td>
+          </tr>
+          <tr>
+              <th style="color: red">Итого</th>
+              <td style="color: red">{{ '{:,}'.format(realisation_value_highest_before_past_year_all).replace(',', ' ')  }} кг. <br> {{ '{:,}'.format(realisation_cost_highest_before_past_year_all | jround()).replace(',', ' ')  }} руб.</td>
+              <td style="color: red">{{ '{:,}'.format(realisation_value_first_before_past_year_all).replace(',', ' ')  }} кг. <br> {{ '{:,}'.format(realisation_cost_first_before_past_year_all | jround()).replace(',', ' ')  }} руб.</td>
+              <td style="color: red">{{ '{:,}'.format(realisation_value_second_before_past_year_all).replace(',', ' ')  }} кг. <br> {{ '{:,}'.format(realisation_cost_second_before_past_year_all  | jround()).replace(',', ' ')  }} руб.</td>
+              <td style="color: red">{{ '{:,}'.format(realisation_value_bran_before_past_year_all).replace(',', ' ')  }} кг. <br> {{ '{:,}'.format(realisation_cost_bran_before_past_year_all  | jround()).replace(',', ' ')  }} руб.</td>
+              <td style="color: red">{{ '{:,}'.format(realisation_value_waste_before_past_year_all).replace(',', ' ')  }} кг. <br> {{ '{:,}'.format(realisation_cost_waste_before_past_year_all  | jround()).replace(',', ' ')  }} руб.</td>
+          </tr>
+        </tbody>
+      </table>
+
+
+</div>
+
+
+</div>
+
+</div>
+
+
+
+
+{% endblock %}
+
+
+{% block click %}
+
+{% include "scriptclick.html" %}
+
+{% endblock click %}

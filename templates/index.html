@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
  <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" crossorigin="anonymous"></script>
-<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;700&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
 {% endblock %}
 
 {% block title %}Grain and Flour{% endblock %}
@@ -21,21 +21,33 @@
       <img src="{{url_for('static', filename='img/logoclear.png')}}" style="height: 100px; margin-left: 25px; margin-top: 10px">
     </div>
     <div class="store">
-    <div class="col-md-2 col-sm-3 col-xs-4 items mont">Зерно - {{ grain }} кг</div>
+
     <div class="col-md-2 col-sm-3 col-xs-4 items mont">Высший - {{ highest }} кг</div>
     <div class="col-md-2 col-sm-3 col-xs-4 items mont">Первый - {{ first }} кг</div>
+    <div class="col-md-2 col-sm-3 col-xs-4 items mont">Второй - {{ second }} кг</div>
     <div class="col-md-2 col-sm-3 col-xs-4 items mont">Отруби - {{ bran }} кг</div>
     <div class="col-md-2 col-sm-3 col-xs-4 items mont">Отходы - {{ waste }} кг</div>
 
+
     </div>
   </div>
+  <div style="position: absolute; margin-left: 32px; margin-top: 20px"><h3>Зерносклад - {{ grain }} кг</h3></div>
+ <div class="vkladka" style="right: {{ mright }}; background-color: {{ bcolor }}; border-radius: 20px 20px 0px 0px">
+
+  <h1>{{ title }}</h1>
+    </div>
+  <hr class="x2">
 </div>
-<hr>
+
+
+<div class="content"   style="background-color: {{ bcolor }}; min-height: 80vh" >
 
 <div class="fluid-container">
+
   <div class="row">
     <div class="col-md-12 col-sm-12">
-<h1 style="margin-right: 130px; text-align: right">{{ title }}</h1>
+
+
   </div>
     </div>
   </div>
@@ -43,39 +55,42 @@
 <div class="fluid-container" style="padding-top: 50px;">
   <div class="row">
     <div class="col-md-3 col-sm-12 btn-container" style="padding-bottom: 50px">
-
-       <button type="button" class="btn btn-primary itmbtns" data-target="#grain" {{onclick2}}"window.location.href='/grain' ;">
+      <div class="btn-back">
+       <button type="button" class="btn btn-primary itmbtns gr-butt" data-target="#grain" {{onclick2}}"window.location.href='/grain' ;">
         Зерно
       </button>
       <button  type="button" class="btn btn-primary addbtns grain plus" data-toggle="modal" data-target="#grain" {{onclick22}}"window.location.href='/grain/add' ;">
         +
       </button><br>
 
-      <button type="button" class="btn btn-primary itmbtns" data-target="#prod" {{onclick3}}"window.location.href='/prod' ;">
+      <button type="button" class="btn btn-primary itmbtns pr-butt" data-target="#prod" {{onclick3}}"window.location.href='/prod' ;">
         Выработка
       </button>
-      <button  type="button" class="btn btn-primary addbtns prod" data-toggle="modal" data-target="#prod" {{onclick33}}"window.location.href='/prod/add' ;">
+      <button  type="button" class="btn btn-primary addbtns prod plus" data-toggle="modal" data-target="#prod" {{onclick33}}"window.location.href='/prod/add' ;">
         +
       </button><br>
-      <button  type="button" class="btn btn-primary itmbtns" data-target="#real" {{onclick1}}"window.location.href='/real' ;">
+      <button  type="button" class="btn btn-primary itmbtns rl-butt" data-target="#real" {{onclick1}}"window.location.href='/real' ;">
         Реализация
       </button>
       <button  type="button" class="btn btn-primary addbtns real plus" data-toggle="modal" data-target="#real" {{onclick11}}"window.location.href='/real/add' ;">
         +
+      </button><br>
+      <button  type="button" class="btn btn-primary itmbtns st-butt" data-target="#real" onclick="window.location.href='/stat' ;">
+        Статистика
       </button>
-
     </div>
-    <div class="col-md-8 col-sm-12">
+    </div>
+
 
     {% block table %}
     {% endblock %}
 
-    </div>
+
 
   </div>
 </div>
 
-
+</div>
 
 
 

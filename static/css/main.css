@@ -1,42 +1,68 @@
+body {
+margin-top: -20px;
+
+}
 
 h1, h3 {
 font-family: 'Merriweather', serif;
+}
+
+tr, th, td, tbody{
+
 
 }
+
+
+
 
 .mont  {
 font-family: 'Montserrat', sans-serif;
 font-weight: bold;
 }
 
-td, tr {
-font-family: 'Montserrat', sans-serif;
-
-}
-
-
-th {
-
-font-family: 'Montserrat', sans-serif;
-font-weight: bold
-}
-
-
 .store {
 margin-top: 60px
 }
 
-
-
 .x1 {
+padding-top: 20px;
+height: 210px;
+position: fixed;
+background-color: white;
+z-index: 1;
+width: 100vw;
 
-height: 110px;
+}
+
+.x2 {
+border-top: 1px solid dark;
+margin-top: 80px
+}
+
+td, tr, th {
+font-family: 'Montserrat', sans-serif;
+font-weight: 600;
+}
+
+.vkladka {
+
+width: 343px;
+display: inline-block;
+text-align: right;
+position: absolute;
+top: 142px;
+text-align: center;
+}
+
+.content {
+position: relative;
+top: 190px
 
 }
 
 .cont1 {
 
-  padding: 0
+padding: 0
 }
 
 .items {
@@ -47,13 +73,49 @@ height: 110px;
 .itmbtns {
 margin-top: 20px;
 margin-left: 30px;
-width: 110px
+width: 110px;
+position: fixed;
+left: 10px
+
 }
 
 .addbtns {
 margin-top: 20px;
 margin-left: 10px;
+position: fixed;
+left: 150px;
 
+}
+
+
+.gr-butt {
+top: 270px
+}
+
+.pr-butt {
+top: 320px
+
+}
+
+.rl-butt {
+top: 370px
+}
+
+.st-butt {
+top: 420px;
+}
+
+
+.grain {
+top: 270px;
+}
+
+.prod {
+top: 320px
+}
+
+.real {
+top: 370px
 }
 
 .ynbtns {
@@ -83,7 +145,7 @@ counter-increment: schet;
 .counter td,
 .counter tr:before {
   padding: .1em .5em;
-  border-bottom: 1px solid #E7D5C0;
+  border-bottom: 1px solid DimGray;
 }
 .counter tbody tr:before {
   content: counter(schet);
@@ -92,7 +154,25 @@ counter-increment: schet;
 
 }
 
+
 /* следующий длинный комментарий, получился недостаточно длинным, а вот теперь - другое дело =) */
+
+
+
+
+
+.btn-back {
+background-color: snow;
+border-radius: 20px;
+height: 300px;
+width: 200px;
+margin-top: 40px;
+margin-left: 20px;
+position: fixed;
+
+
+
+}
 
 @media screen and (max-width: 1000px) {
 
@@ -101,6 +181,7 @@ counter-increment: schet;
 text-align: center;
 
 }
+
 
 .plus {
 
