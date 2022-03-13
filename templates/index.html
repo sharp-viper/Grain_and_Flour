@@ -4,6 +4,7 @@
 
 {% block styles %}
 {{super()}}
+<link rel="shortcut icon" href="{{url_for('static', filename='img/favicon.ico') }}">
 <link rel="stylesheet" href="{{url_for('static', filename='css/main.css') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,7 +15,7 @@
 {% block title %}Grain and Flour{% endblock %}
 
 {% block content %}
-<div class="fluid-container x1">
+<div class="fluid-container x1" >
   <div class="row">
 
     <div class="col-md-2  col-xs-3 logo">
@@ -30,9 +31,12 @@
 
 
     </div>
-  </div>
 
- <div class="vkladka" style="right: {{ mright }}; background-color: {{ bcolor }}; border-radius: 20px 20px 0px 0px">
+  </div>
+<div style="position: absolute; margin-top: 20px; height: 60px; margin-left: 33px; background-color: yellow; border-radius: 20px 20px 0px 0px; padding-left: 20px; padding-right: 20px"><h3>Зерно: {{ grain }} кг</h3></div>
+
+
+  <div class="vkladka" style="right: {{ mright }}; background-color: {{ bcolor }}; border-radius: 20px 20px 0px 0px">
 
   <h1>{{ title }}</h1>
     </div>
@@ -55,30 +59,30 @@
 <div class="fluid-container" style="padding-top: 50px;">
   <div class="row">
     <div class="col-md-3 col-sm-12 btn-container" style="padding-bottom: 50px">
-      <div class="btn-back">
-       <button type="button" class="btn btn-primary itmbtns gr-butt" data-target="#grain" {{onclick2}}"window.location.href='/grain' ;">
+      <div class="btn-back" style="background-color: honeydew">
+       <button type="button" class="btn btn-primary itmbtns gr-butt" data-target="#grain" {{onclick2}}"window.location.href='/gf/grain' ;">
         Зерно
       </button>
-      <button  type="button" class="btn btn-primary addbtns grain plus" data-toggle="modal" data-target="#grain" {{onclick22}}"window.location.href='/grain/add' ;">
+      <button  type="button" class="btn btn-primary addbtns grain plus" data-toggle="modal" data-target="#grain" {{onclick22}}"window.location.href='/gf/grain/add' ;">
         +
       </button><br>
 
-      <button type="button" class="btn btn-primary itmbtns pr-butt" data-target="#prod" {{onclick3}}"window.location.href='/prod' ;">
+      <button type="button" class="btn btn-primary itmbtns pr-butt" data-target="#prod" {{onclick3}}"window.location.href='/gf/prod' ;">
         Выработка
       </button>
-      <button  type="button" class="btn btn-primary addbtns prod plus" data-toggle="modal" data-target="#prod" {{onclick33}}"window.location.href='/prod/add' ;">
+      <button  type="button" class="btn btn-primary addbtns prod plus" data-toggle="modal" data-target="#prod" {{onclick33}}"window.location.href='/gf/prod/add' ;">
         +
       </button><br>
-      <button  type="button" class="btn btn-primary itmbtns rl-butt" data-target="#real" {{onclick1}}"window.location.href='/real' ;">
+      <button  type="button" class="btn btn-primary itmbtns rl-butt" data-target="#real" {{onclick1}}"window.location.href='/gf/real' ;">
         Реализация
       </button>
-      <button  type="button" class="btn btn-primary addbtns real plus" data-toggle="modal" data-target="#real" {{onclick11}}"window.location.href='/real/add' ;">
+      <button  type="button" class="btn btn-primary addbtns real plus" data-toggle="modal" data-target="#real" {{onclick11}}"window.location.href='/gf/real/add' ;">
         +
       </button><br>
-      <button  type="button" class="btn btn-primary itmbtns st-butt" data-target="#real" onclick="window.location.href='/stat' ;">
+      <button  type="button" class="btn btn-primary itmbtns st-butt" data-target="#real" onclick="window.location.href='/gf/stat' ;">
         Статистика
       </button>
-        <div style="margin-top: 175px; margin-left: 23px"><h4>Зерносклад:</h4><h4> {{ grain }} кг</h4></div>
+
     </div>
     </div>
 

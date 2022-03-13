@@ -1,30 +1,38 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash, abort
 from flask_bootstrap import Bootstrap
-from forms import AddRealisation, AddGrain, AddProduction
+from forms import AddRealisation, AddGrain, AddProduction, Logmein
 from flask_sqlalchemy import SQLAlchemy
 import datetime as dt
 import jinja2
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
+from functools import wraps
 
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = '123'
-Bootstrap(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///maintable.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
+application = Flask(__name__)
+application.config['SECRET_KEY'] = '123'
+Bootstrap(application)
+application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///maintable.db'
+application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(application)
+
+login_manager = LoginManager()
+login_manager.init_app(application)
+
+
 
 loader = jinja2.FileSystemLoader('temp')
-# инициализация среды окружения
+# инициализация среды окружения, это нужно нам для того чтобы создать в этой среде функции (см. ниже)
 env = jinja2.Environment(loader=loader, trim_blocks=True)
 
 
-@app.template_filter('jround')
+@application.template_filter('jround')
 def jround(x):
     y = round(x, 2)
     return y
 
 
-@app.template_filter('plus1')
+@application.template_filter('plus1')
 def plus1(x):
     y = x + 1
     return y
@@ -69,7 +77,7 @@ class Production(db.Model):
     exit = db.Column(db.Float(20), nullable=False)
 
 
-class Stock(db.Model):
+class Stock(UserMixin, db.Model):
     __tablename__ = "store"
     id = db.Column(db.Integer, primary_key=True)
     highest = db.Column(db.Float(20), nullable=False)
@@ -82,7 +90,63 @@ class Stock(db.Model):
 #db.create_all()
 
 
-@app.route('/', methods=['GET', 'POST'])
+
+@login_manager.user_loader
+def load_user(user_id):
+    return Stock.query.get(user_id)
+
+
+def logged_only(f):
+    @wraps(f)
+    def decorated_func(*args, **kwargs):
+        try:
+            if current_user.highest == 'melprodukt':
+
+                return f(*args, **kwargs)
+        except:
+
+            return abort(403)
+    return decorated_func
+
+
+@application.route('/')
+def main_page():
+    return render_template('front.html')
+
+
+@application.route('/g', methods=['GET', 'POST'])
+def login():
+
+    try:
+        if current_user.highest == 'melprodukt':
+
+            return redirect('/gf')
+    except:
+        login_form = Logmein()
+
+        if login_form.validate_on_submit():
+            login = login_form.name.data
+            password = login_form.password.data
+
+            user = Stock.query.filter_by(highest=login).first()
+
+            try:
+                if check_password_hash(user.first, password):
+
+                    login_user(user)
+
+                    return redirect('/gf')
+                else:
+                    flash('Неверный пароль')
+                    return redirect('/g')
+            except:
+                flash('Неверный логин')
+                pass
+
+        return render_template('login.html', form=login_form)
+
+@application.route('/gf', methods=['GET', 'POST'])
+@logged_only
 def front_page():
     stock = Stock.query.filter_by(id=1).first()
 
@@ -97,7 +161,7 @@ def front_page():
                            )
 
 
-@app.route('/real/add', methods=['GET', 'POST'])
+@application.route('/gf/real/add', methods=['GET', 'POST'])
 def real_add():
     stock = Stock.query.filter_by(id=1).first()
     realisation_form = AddRealisation(date=dt.datetime.now())
@@ -138,7 +202,7 @@ def real_add():
 
         db.session.commit()
 
-        return redirect('/real')
+        return redirect('/gf/real')
 
     return render_template('realadd.html', title='Реализация', form=realisation_form, first='{:,}'.format(stock.first).replace(',', ' '),
                            second='{:,}'.format(stock.second).replace(',', ' '),
@@ -152,7 +216,7 @@ def real_add():
                            )
 
 
-@app.route('/real', methods=['GET', 'POST'])
+@application.route('/gf/real', methods=['GET', 'POST'])
 def real():
     stock = Stock.query.filter_by(id=1).first()
     realisation_form = AddRealisation(date=dt.datetime.now())
@@ -170,7 +234,7 @@ def real():
                            )
 
 
-@app.route('/grain/add', methods=['GET', 'POST'])
+@application.route('/gf/grain/add', methods=['GET', 'POST'])
 def grain_add():
     stock = Stock.query.filter_by(id=1).first()
     grain_form = AddGrain(discount=0, date=dt.datetime.now())
@@ -200,7 +264,7 @@ def grain_add():
         stock.grain = grain_form.value.data + stock.grain
         db.session.commit()
 
-        return redirect('/grain')
+        return redirect('/gf/grain')
 
     return render_template('grainadd.html', title='Зерно', form=grain_form, first='{:,}'.format(stock.first).replace(',', ' '),
                            second='{:,}'.format(stock.second).replace(',', ' '),
@@ -210,11 +274,11 @@ def grain_add():
                            grain='{:,}'.format(stock.grain).replace(',', ' '),
                            table=reversed(table), button='grain', target='grain', onclick1='onclick=',
                            onclick2='onclick=', onclick3='onclick=', onclick11='onclick=', onclick33='onclick=',
-                           bcolor='#ffa775', mright='450px'
+                           bcolor='#ffa775', mright='350px'
                            )
 
 
-@app.route('/grain', methods=['GET', 'POST'])
+@application.route('/gf/grain', methods=['GET', 'POST'])
 def grain():
     stock = Stock.query.filter_by(id=1).first()
     grain_form = AddGrain(discount=0, date=dt.datetime.now())
@@ -232,11 +296,11 @@ def grain():
                            grain='{:,}'.format(stock.grain).replace(',', ' '), table=reversed(table),
                            button='grain', target='grain', onclick1='onclick=', onclick22='onclick=', onclick3='onclick=',
                            onclick11='onclick=', onclick33='onclick=', bcolor='#ffa775',
-                           mright='450px'
+                           mright='350px'
                            )
 
 
-@app.route('/prod/add', methods=['GET', 'POST'])
+@application.route('/gf/prod/add', methods=['GET', 'POST'])
 def prod_add():
     prod_form = AddProduction(date=dt.datetime.now(), highest=0, second=0, waste=0)
     stock = Stock.query.filter_by(id=1).first()
@@ -269,7 +333,7 @@ def prod_add():
 
         db.session.commit()
 
-        return redirect('/prod')
+        return redirect('/gf/prod')
 
     return render_template('prodadd.html', title='Выработка', form=prod_form, first='{:,}'.format(stock.first).replace(',', ' '),
                            second='{:,}'.format(stock.second).replace(',', ' '),
@@ -279,11 +343,11 @@ def prod_add():
                            grain='{:,}'.format(stock.grain).replace(',', ' '),
                            button='prod', target='prod', onclick1='onclick=', onclick2='onclick=',
                            table=reversed(table), onclick11='onclick=', onclick22='onclick=', bcolor='#ffcd6b',
-                           mright='250px'
+                           mright='200px'
                            )
 
 
-@app.route('/prod', methods=['GET', 'POST'])
+@application.route('/gf/prod', methods=['GET', 'POST'])
 def prod():
     prod_form = AddProduction(date=dt.datetime.now(), highest=0, second=0, waste=0)
     stock = Stock.query.filter_by(id=1).first()
@@ -299,11 +363,11 @@ def prod():
                            grain='{:,}'.format(stock.grain).replace(',', ' '),
                            button='prod', target='prod', onclick1='onclick=', onclick2='onclick=', onclick33='onclick=',
                            table=reversed(table), onclick11='onclick=', onclick22='onclick=', bcolor='#ffcd6b',
-                           mright='250px'
+                           mright='200px'
                            )
 
 
-@app.route('/real/del', methods=['GET', 'POST'])
+@application.route('/gf/real/del', methods=['GET', 'POST'])
 def delete_real():
     stock = Stock.query.filter_by(id=1).first()
 
@@ -325,10 +389,10 @@ def delete_real():
         stock.second += float(del_value)
 
     db.session.commit()
-    return redirect('/real')
+    return redirect('/gf/real')
 
 
-@app.route('/grain/del', methods=['GET', 'POST'])
+@application.route('/gf/grain/del', methods=['GET', 'POST'])
 def delete_grain():
     stock = Stock.query.filter_by(id=1).first()
 
@@ -341,10 +405,10 @@ def delete_grain():
 
     db.session.commit()
 
-    return redirect('/grain')
+    return redirect('/gf/grain')
 
 
-@app.route('/prod/del', methods=['GET', 'POST'])
+@application.route('/gf/prod/del', methods=['GET', 'POST'])
 def delete_prod():
     stock = Stock.query.filter_by(id=1).first()
 
@@ -366,10 +430,10 @@ def delete_prod():
     stock.grain += float(del_highest) + float(del_bran) + float(del_waste) + float(del_second) + float(del_first)
 
     db.session.commit()
-    return redirect('/prod')
+    return redirect('/gf/prod')
 
 
-@app.route('/real/edit', methods=['GET', 'POST'])
+@application.route('/gf/real/edit', methods=['GET', 'POST'])
 def real_edit():
     stock = Stock.query.filter_by(id=1).first()
     table = db.session.query(Realisation).filter(Realisation.date <= dt.datetime.now(),
@@ -428,7 +492,7 @@ def real_edit():
 
         db.session.commit()
 
-        return redirect('/real')
+        return redirect('/gf/real')
 
     return render_template('realadd.html', title='Реализация', form=realisation_form, first='{:,}'.format(stock.first).replace(',', ' '),
                            second='{:,}'.format(stock.second).replace(',', ' '),
@@ -437,11 +501,12 @@ def real_edit():
                            waste='{:,}'.format(stock.waste).replace(',', ' '),
                            grain='{:,}'.format(stock.grain).replace(',', ' '),
                            button='real', target='real', onclick2='onclick=', onclick3='onclick=',
-                           table=reversed(table), onclick22='onclick=', onclick33='onclick='
+                           table=reversed(table), onclick22='onclick=', onclick33='onclick=', bcolor='#a1ff92',
+                           mright='50px'
                            )
 
 
-@app.route('/grain/edit', methods=['GET', 'POST'])
+@application.route('/gf/grain/edit', methods=['GET', 'POST'])
 def grain_edit():
     stock = Stock.query.filter_by(id=1).first()
     table = db.session.query(Grain).filter(Grain.date <= dt.datetime.now(),
@@ -471,7 +536,7 @@ def grain_edit():
 
         db.session.commit()
 
-        return redirect('/grain')
+        return redirect('/gf/grain')
 
     return render_template('grainadd.html', title='Зерно', form=grain_form, first='{:,}'.format(stock.first).replace(',', ' '),
                            second='{:,}'.format(stock.second).replace(',', ' '),
@@ -480,11 +545,12 @@ def grain_edit():
                            waste='{:,}'.format(stock.waste).replace(',', ' '),
                            grain='{:,}'.format(stock.grain).replace(',', ' '),
                            table=reversed(table), button='grain', target='grain', onclick1='onclick=',
-                           onclick2='onclick=', onclick3='onclick=', onclick11='onclick=', onclick33='onclick='
+                           onclick2='onclick=', onclick3='onclick=', onclick11='onclick=', onclick33='onclick=',
+                           bcolor='#ffa775', mright='350px'
                            )
 
 
-@app.route('/prod/edit', methods=['GET', 'POST'])
+@application.route('/gf/prod/edit', methods=['GET', 'POST'])
 def prod_edit():
 
     stock = Stock.query.filter_by(id=1).first()
@@ -527,7 +593,7 @@ def prod_edit():
 
         db.session.commit()
 
-        return redirect('/prod')
+        return redirect('/gf/prod')
 
     return render_template('prodadd.html', title='Выработка', form=prod_form,
                            first='{:,}'.format(stock.first).replace(',', ' '),
@@ -537,11 +603,12 @@ def prod_edit():
                            waste='{:,}'.format(stock.waste).replace(',', ' '),
                            grain='{:,}'.format(stock.grain).replace(',', ' '),
                            button='prod', target='prod', onclick1='onclick=', onclick2='onclick=',
-                           table=reversed(table), onclick11='onclick=', onclick22='onclick='
+                           table=reversed(table), onclick11='onclick=', onclick22='onclick=', bcolor='#ffcd6b',
+                           mright='200px'
                            )
 
 
-@app.route('/stat', methods=['GET', 'POST'])
+@application.route('/gf/stat', methods=['GET', 'POST'])
 def stat():
     stock = Stock.query.filter_by(id=1).first()
     now_year = dt.datetime.now().year
@@ -1804,7 +1871,7 @@ def stat():
                            grain='{:,}'.format(stock.grain).replace(',', ' '),
                            onclick1='onclick=', onclick2='onclick=', onclick3='onclick=',
                            onclick11='onclick=', onclick22='onclick=', onclick33='onclick=',
-                           bcolor='#add8e6', title='Статистика', mright='650px',
+                           bcolor='#add8e6', title='Статистика', mright='500px',
                            grain_value_this_year=grain_value_this_year, now_year=now_year,
                            grain_cost_this_year=grain_cost_this_year,
                            grain_value_this_year_all=grain_value_this_year_all,
@@ -1909,20 +1976,5 @@ def stat():
                            realisation_cost_waste_before_past_year_all=realisation_cost_waste_before_past_year_all,
     )
 
-
-zerno = db.session.query(Grain).all()
-virab = db.session.query(Production).all()
-zernoves = 0
-prodves = 0
-for i in zerno:
-    zernoves += i.value
-for i in virab:
-    prodves += (i.highest + i.first + i.second + i.bran + i.waste)
-
-print(f'Сейчас на складе {zernoves - prodves} кг. зерна')
-
-
-
-
 if __name__ == '__main__':
-    app.run(debug=True)
+    application.run(host='0.0.0.0')

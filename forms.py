@@ -8,7 +8,7 @@ class AddRealisation(FlaskForm):
     date = DateField("Дата", validators=[DataRequired()])
     production = SelectField("Продукция", validators=[DataRequired()], choices=['Первый сорт', 'Высший сорт', 'Отруби', 'Зерноотходы', 'Второй сорт'])
     value = FloatField("Количество (кг)", validators=[DataRequired()])
-    price = FloatField("Цена (руб/кг)", validators=[DataRequired()])
+    price = StringField("Цена (руб/кг)", validators=[DataRequired()])
     submit = SubmitField("Добавить")
 
 
@@ -29,3 +29,9 @@ class AddProduction(FlaskForm):
     waste = FloatField("Зерноотходы")
     second = FloatField("Второй сорт (кг)")
     submit = SubmitField("Добавить")
+
+
+class Logmein(FlaskForm):
+    name = StringField("login")
+    password = PasswordField("password")
+    submit = SubmitField("Вход")
